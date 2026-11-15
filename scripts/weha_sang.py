@@ -65,6 +65,8 @@ CSS_M = """
 .chip{display:inline-block;font-size:15px;font-weight:600;padding:1px 7px;border-radius:10px;margin-right:6px;background:#EFECE2;color:#3D3D3A;white-space:nowrap}
 .chip.pos{background:#E3EFE6;color:#2F7D4F} .chip.neg{background:#F6E2DD;color:#B8432F}
 .sunb{background:#EED951;color:#1F3366;font-weight:800;font-size:25px;letter-spacing:.14em;padding:7px 18px;border-radius:6px}
+.ed b.bs{display:block;width:fit-content;margin-left:auto;font-size:25px;font-weight:800;letter-spacing:.12em;color:#1F3366;padding-bottom:3px;border-bottom:4px solid #EED951;margin-bottom:5px}
+.pill{display:none}
 .hero{background:#fff;border:1px solid #E6E3D8;border-left:6px solid #EED951;border-radius:6px;padding:12px 16px;margin-top:12px}
 .hero .row{display:flex;gap:18px;align-items:center}
 .hero .big{font-family:Lora,serif;font-size:34px;line-height:1.05;color:#1F3366;white-space:nowrap} .hero .bl{font-size:12.5px;color:#6F6E68;margin-top:2px}
@@ -157,7 +159,7 @@ def shell(d, body, k):
     return f"""<!doctype html><html lang="vi"><head><meta charset="utf-8"><style>{CSS}</style>
 <style>{CSS_M}</style><style>.page .list p{{font-size:calc(21px*var(--k))}} .ev{{font-size:calc(18.5px*var(--k))}} .ev td{{padding:calc(10px*var(--k)) 6px}}</style></head>
 <body><div class="page" style="--k:{k}">
-<div class="top"><img src="data:image/png;base64,{LOGO}" alt="Weha"><div class="sunb">BẢN TIN SÁNG</div><div class="ed"><b>Bản tin sáng · 08:00</b>{esc(d["date_label"])}</div></div>
+<div class="top"><img src="data:image/png;base64,{LOGO}" alt="Weha"><div class="ed"><b class="bs">BẢN TIN SÁNG</b>{esc(d["date_label"])} · 08:00</div></div>
 {body}
 <div class="spacer"></div>
 <div class="foot"><div class="who"><b>Nguyễn Hoài</b><br>Weha · 0396 336 096</div>
