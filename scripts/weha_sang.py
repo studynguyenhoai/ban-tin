@@ -33,7 +33,7 @@ td{border-bottom:1px solid #E6E3D8;padding:8px 4px} tr:last-child td{border-bott
 .foot .who{font-size:15px;line-height:1.5} .foot .who b{font-family:Lora,serif;font-size:19px;font-weight:600}
 .foot .disc{font-size:11.5px;color:#6F6E68;line-height:1.5;max-width:560px;text-align:right}
 
-.page{width:1080px;height:1527px;padding:40px 54px 30px;display:flex;flex-direction:column;overflow:hidden}
+.page{width:1080px;height:1920px;padding:40px 54px 30px;display:flex;flex-direction:column;overflow:hidden}
 .top{margin-bottom:16px;padding-bottom:12px;border-bottom:3px solid #1F3366} .top img{height:46px;display:block}
 .ed b{color:#1F3366}
 .pill{background:#1F3366;margin-bottom:6px;font-size:11px;padding:4px 9px}
@@ -53,10 +53,10 @@ table{font-size:13px} td{padding:5px 4px} th{padding:4px}
 .foot .disc{font-size:10.5px}
 """
 CSS_M = """
-.page h1{font-size:38px;font-weight:600;line-height:1.25;letter-spacing:-.01em;word-spacing:-.04em;color:#141413} .page h1 b,.page h1 mark{font-weight:800;color:#141413;background:none;padding:0;box-shadow:inset 0 -.2em 0 #EED951} .page .lede{font-size:18.5px;color:#3D3C38;font-weight:500;white-space:nowrap}
+.page h1{font-size:38px;font-weight:600;line-height:1.25;letter-spacing:-.01em;word-spacing:-.04em;color:#141413} .page h1 b,.page h1 mark{font-weight:800;color:#141413;background:none;padding:0;box-shadow:inset 0 -.46em 0 #EED951} .page .lede{font-size:18.5px;color:#3D3C38;font-weight:500;white-space:nowrap}
 .page h2{font-size:25px;margin:16px 0 4px;padding-top:10px} .page .sub{font-size:16px;margin:0 0 8px}
 .page .lab{font-size:16px} .mini .v{font-size:30px} .page .chg{font-size:16.5px}
-.page .list p{font-size:21px;line-height:1.42;padding:8px 0} .page .tag{font-size:13.5px;padding:3px 8px}
+.page .list p{font-size:27px;line-height:1.42;padding:8px 0;text-align:left;text-wrap:pretty;hyphens:none;overflow-wrap:normal} .page .tag{font-size:13.5px;padding:3px 8px}
 .page .card h3{font-size:20px;margin-bottom:6px}
 .ev{font-size:18.5px} .ev th{font-size:15px} .ev td{padding:10px 6px} .ev td:first-child{white-space:nowrap;color:#6F6E68}
 .ev td:nth-child(2){font-weight:600;white-space:nowrap}
@@ -85,6 +85,9 @@ CSS_M = """
 .fl .h{font-weight:700;font-size:13.5px;color:#141413;margin:8px 0 3px;text-transform:uppercase;letter-spacing:.05em}
 .fl .r{display:grid;grid-template-columns:52px 1fr 76px;align-items:center;gap:8px;margin:4px 0}
 .fl .r b{font-size:16px} .fl .bar{height:14px;border-radius:3px} .fl .bar.b{background:#2F7D4F} .fl .bar.s{background:#B8432F} .fl .v{text-align:right;font-size:15.5px;font-weight:600}
+.fl .h{font-size:16px;margin:12px 0 4px} .fl .r{grid-template-columns:64px 1fr 90px;margin:6px 0} .fl .r b{font-size:20px} .fl .bar{height:19px} .fl .v{font-size:19.5px}
+.wk .it{font-size:19.5px} .wk .dh{font-size:21px} .wk .dh span{font-size:16px} .wk .col{min-height:190px} .wk .none{font-size:16px}
+.page .sub{font-size:18px}
 """
 
 def esc(x): return H.escape(str(x), quote=False)
@@ -108,6 +111,7 @@ def tile(t):
             f'<p class="chg {cls}"{w}>{esc(t.get("note",""))}</p></div>')
 
 def chips(cs):
+    return ""
     out = ""
     for sym, pct in cs:
         c = "pos" if str(pct).startswith("+") else ("neg" if str(pct).startswith(("−", "-")) else "")
@@ -118,7 +122,7 @@ import re as _re
 _NUM = _re.compile(r"(?<![\d/])[+−-]?(?:\d{1,3}(?:\.\d{3})+|\d+)(?:,\d+)?(?:\s?(?:%|tỷ USD|tỷ đồng|tỷ|triệu cổ phiếu|triệu|USD|bps))?")
 def boldnum(t, color=True):
     def sub(m, pre=""):
-        x = m.group(0)
+        x = m.group(0).replace(" ", "\u00a0")
         if not _re.search(r"[,.]\d|%|tỷ|triệu|USD|bps", x): return x
         cls = ""
         if not color: return f"<b>{x}</b>"
@@ -126,6 +130,7 @@ def boldnum(t, color=True):
         elif x.startswith(("−", "-")): cls = "neg"
         elif "%" in x or "bps" in x:
             ctx = pre[-18:].lower()
+            if _re.search(r"lãi (vay|suất)", ctx): return f"<b>{x}</b>"
             if _re.search(r"giảm|hạ |xuống|lỗ", ctx): cls = "neg"
             elif _re.search(r"tăng|lên ", ctx): cls = "pos"
         return f'<b class="{cls}">{x}</b>' if cls else f"<b>{x}</b>"
@@ -188,7 +193,7 @@ def table(rows):
 
 def shell(d, body, k):
     return f"""<!doctype html><html lang="vi"><head><meta charset="utf-8"><style>{CSS}</style>
-<style>{CSS_M}</style><style>.page .list p{{font-size:calc(21px*var(--k))}} .ev{{font-size:calc(18.5px*var(--k))}} .ev td{{padding:calc(10px*var(--k)) 6px}}</style></head>
+<style>{CSS_M}</style><style>.page .list p{{font-size:calc(27px*var(--k))}} .ev{{font-size:calc(18.5px*var(--k))}} .ev td{{padding:calc(10px*var(--k)) 6px}}</style></head>
 <body><div class="page" style="--k:{k}">
 <div class="top"><img src="data:image/png;base64,{LOGO}" alt="Weha"><div class="ed"><b class="bs">BẢN TIN SÁNG</b>{esc(d["date_label"])}</div></div>
 {body}
@@ -199,7 +204,6 @@ def shell(d, body, k):
 
 def page1(d):
     return f"""<span class="pill">Bản tin sáng</span>
-<p class="brand">Trước giờ mở cửa · {esc(d["date_short"])} · Trang 1/2 — Vĩ mô</p>
 <h1>{boldnum(rich(d["headline"]), False).replace("VN-Index","VN‑Index")}</h1>
 <p class="lede">{boldnum(rich(d["lede"]), False)}</p>
 <div class="strip mini">{"".join(tile(t) for t in d["strip"])}</div>
@@ -215,7 +219,6 @@ def page1(d):
 
 def page2(d):
     return f"""<span class="pill">Bản tin sáng</span>
-<p class="brand">Trước giờ mở cửa · {esc(d["date_short"])} · Trang 2/2 — Doanh nghiệp & lịch sự kiện</p>
 <h2 style="margin-top:6px;border-top:0;padding-top:0"><span class="no">03</span> Doanh nghiệp đáng chú ý</h2>
 <p class="sub">Kết quả kinh doanh và tin mới</p>
 <div class="card list">{news(d["company_news"])}</div>
@@ -228,18 +231,27 @@ async def render(d, out):
     from playwright.async_api import async_playwright
     async with async_playwright() as p:
         b = await p.chromium.launch()
-        pg = await b.new_page(viewport={"width": 1080, "height": 1527}, device_scale_factor=2.3)
+        pg = await b.new_page(viewport={"width": 1080, "height": 1920}, device_scale_factor=2.3)
         files = []
-        for i, fn in ((1, page1), (2, page2)):
+        async def draw(i, fn, k):
+            path = os.path.join(out, f"Weha_ban_tin_sang_{d['file_date']}_trang{i}.html")
+            open(path, "w", encoding="utf-8").write(shell(d, fn(d), k))
+            await pg.goto("file://" + os.path.abspath(path)); await pg.wait_for_timeout(250)
+            h = await pg.evaluate("document.querySelector('.page').scrollHeight")
+            return path, h
+        pages = ((1, page1), (2, page2))
+        ks = []
+        for i, fn in pages:  # tìm hệ số chữ vừa khít cho từng trang
             k = 1.0
             while True:
-                path = os.path.join(out, f"Weha_ban_tin_sang_{d['file_date']}_trang{i}.html")
-                open(path, "w", encoding="utf-8").write(shell(d, fn(d), k))
-                await pg.goto("file://" + os.path.abspath(path)); await pg.wait_for_timeout(250)
-                h = await pg.evaluate("document.querySelector('.page').scrollHeight")
-                if h <= 1527 or k <= 0.8: break
+                _, h = await draw(i, fn, k)
+                if h <= 1920 or k <= 0.8: break
                 k = round(k - 0.03, 2)
-            if h > 1527: print(f"CẢNH BÁO: trang {i} vẫn tràn ({h}px) — hãy bớt 1-2 dòng tin")
+            ks.append(k)
+        k = min(ks)  # cả 2 trang dùng chung một cỡ chữ
+        for i, fn in pages:
+            path, h = await draw(i, fn, k)
+            if h > 1920: print(f"CẢNH BÁO: trang {i} vẫn tràn ({h}px) — hãy bớt 1-2 dòng tin")
             png = path.replace(".html", ".png")
             await (await pg.query_selector(".page")).screenshot(path=png)
             files.append(png); print(f"trang {i}: chiều cao {h}px, hệ số chữ {k}")

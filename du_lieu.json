@@ -139,23 +139,11 @@
  "company_news": [
   {
    "s": "+",
-   "text": "<b>HPG</b> lập công ty năng lượng tái tạo vốn gần 650 tỷ đồng.",
-   "chips": [
-    [
-     "HPG",
-     "0,0%"
-    ]
-   ]
+   "text": "<b>HPG</b> lập công ty năng lượng tái tạo vốn gần 650 tỷ đồng."
   },
   {
    "s": "+",
-   "text": "<b>NKG</b>: con gái Chủ tịch Hồ Minh Quang đăng ký mua 5 triệu cổ phiếu.",
-   "chips": [
-    [
-     "NKG",
-     "−2,0%"
-    ]
-   ]
+   "text": "<b>NKG</b>: con gái Chủ tịch Hồ Minh Quang đăng ký mua 5 triệu cổ phiếu."
   },
   {
    "s": "-",
@@ -164,13 +152,7 @@
   },
   {
    "s": "o",
-   "text": "<b>DMX</b> (Điện Máy Xanh) phát hành lô trái phiếu 100 tỷ đồng.",
-   "chips": [
-    [
-     "DMX",
-     "−1,2%"
-    ]
-   ]
+   "text": "<b>DMX</b> (Điện Máy Xanh) phát hành lô trái phiếu 100 tỷ đồng."
   },
   {
    "s": "o",
@@ -178,21 +160,7 @@
   },
   {
    "s": "o",
-   "text": "<b>Viettel</b> nắm 4,7 tỷ cổ phiếu trị giá 262.600 tỷ.",
-   "chips": [
-    [
-     "MBB",
-     "−0,3%"
-    ],
-    [
-     "VGI",
-     "+1,0%"
-    ],
-    [
-     "VTP",
-     "+0,1%"
-    ]
-   ]
+   "text": "<b>Viettel</b> nắm 4,7 tỷ cổ phiếu trị giá 262.600 tỷ."
   },
   {
    "s": "o",
