@@ -1,0 +1,277 @@
+{
+ "file_date": "03-11-2026",
+ "date_label": "Thứ Ba, 03/11/2026",
+ "date_short": "Thứ Ba 03/11/2026",
+ "headline": "Xuất nhập khẩu 10 tháng vượt <mark>1.000 tỷ USD</mark>; thị trường chờ bầu cử giữa kỳ Mỹ và báo cáo việc làm cuối tuần",
+ "lede": "VN-Index vừa mất 31 điểm về 1.710,72; nhiều đợt chia cổ tức trong tuần.",
+ "strip": [
+  {
+   "label": "VN-Index 02/11",
+   "value": "1.710,72",
+   "note": "−1,77%",
+   "tone": "down"
+  },
+  {
+   "label": "VN30 02/11",
+   "value": "1.813,41",
+   "note": "−2,24%",
+   "tone": "down"
+  },
+  {
+   "label": "Khối ngoại 02/11",
+   "value": "−457 tỷ",
+   "note": "Bán mạnh MBB, VCB, ACB",
+   "value_red": true
+  },
+  {
+   "label": "Tự doanh 02/11",
+   "value": "−205 tỷ",
+   "note": "Bán mạnh MWG, BID, SSI",
+   "value_red": true
+  }
+ ],
+ "intl_sub": "Đóng cửa phiên 02/11 · % so với phiên trước",
+ "intl_tiles": [
+  {
+   "label": "S&P 500",
+   "value": "7.632,91",
+   "note": "+0,70%",
+   "tone": "up"
+  },
+  {
+   "label": "Nasdaq",
+   "value": "25.666,29",
+   "note": "+0,90%",
+   "tone": "up"
+  },
+  {
+   "label": "Vàng (USD/oz)",
+   "value": "3.967,6",
+   "note": "+1,37%",
+   "tone": "up"
+  },
+  {
+   "label": "Dầu Brent",
+   "value": "106,09",
+   "note": "−3,33%",
+   "tone": "down"
+  },
+  {
+   "label": "UST 10 năm",
+   "value": "4,908%",
+   "note": "−2 bps",
+   "tone": "down"
+  }
+ ],
+ "intl_news": [
+  {
+   "s": "o",
+   "text": "<b>Fed</b> giữ lãi suất 3,75–4,00% (phiếu 10–2). PCE tháng 9 tăng 3,6%, lõi 3,1%; GDP quý 3 Mỹ +3,4%. FedWatch: <b>70%</b> khả năng tăng lãi suất ngày 09/12."
+  },
+  {
+   "s": "-",
+   "text": "<b>Trung Quốc</b>: PMI sản xuất tháng 10 giảm còn 49,3, phi sản xuất 49,7, cùng dưới ngưỡng 50."
+  },
+  {
+   "s": "o",
+   "text": "<b>BoC</b> tăng 25 bps lên 2,5%; <b>BOJ</b> giữ 1,25%, nâng kế hoạch bán ETF lên 860 tỷ yên/năm từ 01/2027."
+  },
+  {
+   "s": "+",
+   "text": "<b>Dầu</b> hạ nhiệt: Brent về quanh 106 USD, WTI 97 USD; OPEC+ giữ nguyên sản lượng tháng 12."
+  }
+ ],
+ "dom_tiles": [
+  {
+   "label": "XNK 10T (tỷ USD)",
+   "value": "1.010,6",
+   "note": "+32,3% so cùng kỳ"
+  },
+  {
+   "label": "GDP quý 3",
+   "value": "9,95%",
+   "note": "Quý 2: 8,39%"
+  },
+  {
+   "label": "CPI tháng 9",
+   "value": "5,08%",
+   "note": "Tháng 8: 4,89%"
+  },
+  {
+   "label": "Tỷ giá trung tâm",
+   "value": "25.631",
+   "note": "−6 đồng"
+  },
+  {
+   "label": "USD/VND tự do",
+   "value": "25.750",
+   "note": "−52 đồng"
+  }
+ ],
+ "dom_news": [
+  {
+   "s": "+",
+   "text": "<b>Xuất nhập khẩu</b> 10 tháng đạt kỷ lục <b>1.010,6 tỷ USD</b>, tăng 32,3% so với cùng kỳ."
+  },
+  {
+   "s": "+",
+   "text": "Từ 01/11: <b>thuế TTĐB xăng về 0%</b> đến 31/03/2027, giá xăng giảm 1.575–1.804 đ/lít; <b>giá điện</b> bình quân giảm 2%."
+  },
+  {
+   "s": "+",
+   "text": "Giảm <b>30% thuế TNDN</b> năm 2026–2027 cho doanh nghiệp và hộ kinh doanh có doanh thu dưới 10 tỷ/năm."
+  },
+  {
+   "s": "o",
+   "text": "Tái cơ cấu vốn Nhà nước 2026–2030: giảm sở hữu tại <b>VCB, BID</b> xuống tối thiểu 65%; thoái vốn tại <b>GVR, HVN</b>."
+  },
+  {
+   "s": "-",
+   "text": "<b>Khối ngoại</b> bán ròng hơn 24.000 tỷ trên HOSE trong tháng 10, lũy kế 10 tháng khoảng 122.000 tỷ."
+  }
+ ],
+ "company_news": [
+  {
+   "s": "+",
+   "text": "<b>VHM</b> lãi quý 3 đạt 23.100 tỷ (+453%), 9 tháng hoàn thành 113% dự báo năm; doanh số chờ ghi nhận 185.600 tỷ."
+  },
+  {
+   "s": "+",
+   "text": "<b>BSR</b> lãi kỷ lục 8.970 tỷ, gấp gần 10 lần cùng kỳ nhờ crack spread nới rộng."
+  },
+  {
+   "s": "+",
+   "text": "<b>VIC</b> lãi 9 tháng 43.700 tỷ, vượt 25% kế hoạch năm; VinFast giao 82.580 xe trong quý 3 (+116%)."
+  },
+  {
+   "s": "+",
+   "text": "<b>MWG</b> lãi quý 3 +97%, vượt kế hoạch năm; <b>CTG</b> LNTT 13.689 tỷ (+29%), vượt VCB về lợi nhuận quý."
+  },
+  {
+   "s": "-",
+   "text": "<b>PNJ</b> lỗ quý 3 gần 258 tỷ do dự phòng kim cương ~1.700 tỷ; cổ phiếu người nhà Chủ tịch bị bán giải chấp."
+  },
+  {
+   "s": "-",
+   "text": "<b>HVN</b> (công ty mẹ) lỗ 284 tỷ do chi phí nhiên liệu tăng thêm 4.360 tỷ."
+  },
+  {
+   "s": "o",
+   "text": "<b>MBB</b> lập ngân hàng con vốn 3.000 tỷ tại Trung tâm Tài chính quốc tế; <b>DPR</b> trình thưởng cổ phiếu 1:1."
+  }
+ ],
+ "dividends": [
+  [
+   "03/11",
+   "ISH",
+   "Cổ tức tiền 12%"
+  ],
+  [
+   "03/11",
+   "C69 · KTC",
+   "Cổ tức tiền 6% · 4%"
+  ],
+  [
+   "04/11",
+   "SGN",
+   "Cổ tức tiền 25%"
+  ],
+  [
+   "04/11",
+   "PC1",
+   "Thưởng cổ phiếu 20:3"
+  ],
+  [
+   "04/11",
+   "CCC",
+   "Thưởng cổ phiếu 25:1"
+  ],
+  [
+   "04/11",
+   "PNT · TMX",
+   "Cổ tức tiền 5% · 3%"
+  ],
+  [
+   "05/11",
+   "WSB · PCC",
+   "Cổ tức tiền 20% · 15%"
+  ],
+  [
+   "05/11",
+   "QTP",
+   "Cổ tức tiền 7%"
+  ],
+  [
+   "05/11",
+   "TBD · ECO · TV6",
+   "Thưởng 2:1 · 50:3 · 20:3"
+  ],
+  [
+   "06/11",
+   "VNC · RBC",
+   "Cổ tức tiền 6% · 1%"
+  ],
+  [
+   "09/11",
+   "MFS · SFI · VFG",
+   "Tiền 25% · 10% · 10%"
+  ],
+  [
+   "09/11",
+   "VBB",
+   "Quyền mua tỷ lệ 4:1"
+  ]
+ ],
+ "events": [
+  [
+   "03/11",
+   "Mỹ",
+   "Bầu cử giữa kỳ; JOLTS (22:00)"
+  ],
+  [
+   "03/11",
+   "NVL",
+   "Nội bộ đăng ký mua 30tr cp"
+  ],
+  [
+   "03/11",
+   "DXG",
+   "Nội bộ đăng ký mua 15tr cp"
+  ],
+  [
+   "04/11",
+   "VHM",
+   "HĐND HN xét cơ chế đường sắt"
+  ],
+  [
+   "04/11",
+   "CII",
+   "Đại hội cổ đông bất thường"
+  ],
+  [
+   "04/11",
+   "Mỹ",
+   "ADP (20:15), ISM dịch vụ (22:00)"
+  ],
+  [
+   "04/11",
+   "EU",
+   "Lạm phát Eurozone (17:00)"
+  ],
+  [
+   "06/11",
+   "Mỹ",
+   "Việc làm phi nông nghiệp (20:30)"
+  ],
+  [
+   "06/11",
+   "VDS",
+   "Vợ Chủ tịch mua 4 triệu cp"
+  ],
+  [
+   "20/11",
+   "VN30F",
+   "Đáo hạn phái sinh tháng 11"
+  ]
+ ]
+}
