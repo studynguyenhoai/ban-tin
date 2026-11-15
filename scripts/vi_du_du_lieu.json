@@ -81,9 +81,9 @@
  ],
  "dom_tiles": [
   {
-   "label": "Xuất khẩu T10",
+   "label": "Xuất khẩu T10, USD",
    "value": "64,7 tỷ",
-   "note": "USD · xuất siêu 7,3 tỷ"
+   "note": "Xuất siêu 7,3 tỷ"
   },
   {
    "label": "GDP quý 3",
@@ -101,9 +101,9 @@
    "note": "+14 đồng"
   },
   {
-   "label": "OMO ròng 13/11",
-   "value": "−18.154 tỷ",
-   "note": "NHNN hút ròng"
+   "label": "OMO ròng (tỷ)",
+   "value": "−18.154",
+   "note": "NHNN hút ròng 13/11"
   }
  ],
  "dom_news": [
@@ -224,17 +224,6 @@
    "Thông báo ĐHCĐ bất thường (dự kiến T12)"
   ]
  ],
- "hero": {
-  "big": "gần 4 năm",
-  "label": "PPI Mỹ ở mức cao nhất",
-  "text": "Lạm phát giá sản xuất Mỹ tăng mạnh, <b>Fed</b> thêm lý do tăng lãi suất trong tháng 12.",
-  "chain": [
-   "PPI Mỹ cao nhất gần 4 năm",
-   "Fed thêm sức ép tăng lãi suất T12",
-   "UST 10 năm 5,15% (+5 bps)",
-   "Chứng khoán Mỹ giảm: Nasdaq −0,91%"
-  ]
- },
  "flows": {
   "date": "13/11",
   "foreign": {

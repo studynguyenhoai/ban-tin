@@ -53,17 +53,18 @@ table{font-size:13px} td{padding:5px 4px} th{padding:4px}
 .foot .disc{font-size:10.5px}
 """
 CSS_M = """
-.page h1{font-size:36px} .page .lede{font-size:19px}
-.page h2{font-size:23px;margin:16px 0 4px;padding-top:10px} .page .sub{font-size:15px;margin:0 0 8px}
-.page .lab{font-size:15px} .mini .v{font-size:28px} .page .chg{font-size:15.5px}
-.page .list p{font-size:19px;line-height:1.42;padding:8px 0} .page .tag{font-size:12.5px;padding:3px 8px}
-.page .card h3{font-size:19px;margin-bottom:6px}
+.page h1{font-size:38px} .page .lede{font-size:20.5px}
+.page h2{font-size:25px;margin:16px 0 4px;padding-top:10px} .page .sub{font-size:16px;margin:0 0 8px}
+.page .lab{font-size:16px} .mini .v{font-size:30px} .page .chg{font-size:16.5px}
+.page .list p{font-size:21px;line-height:1.42;padding:8px 0} .page .tag{font-size:13.5px;padding:3px 8px}
+.page .card h3{font-size:20px;margin-bottom:6px}
 .ev{font-size:18.5px} .ev th{font-size:15px} .ev td{padding:10px 6px} .ev td:first-child{white-space:nowrap;color:#6F6E68}
 .ev td:nth-child(2){font-weight:600;white-space:nowrap}
 .strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
 .page .grid{gap:10px}
-.chip{display:inline-block;font-size:13px;font-weight:600;padding:1px 7px;border-radius:10px;margin-right:6px;background:#EFECE2;color:#3D3D3A;white-space:nowrap}
+.chip{display:inline-block;font-size:15px;font-weight:600;padding:1px 7px;border-radius:10px;margin-right:6px;background:#EFECE2;color:#3D3D3A;white-space:nowrap}
 .chip.pos{background:#E3EFE6;color:#2F7D4F} .chip.neg{background:#F6E2DD;color:#B8432F}
+.sunb{background:#EED951;color:#1F3366;font-weight:800;font-size:25px;letter-spacing:.14em;padding:7px 18px;border-radius:6px}
 .hero{background:#fff;border:1px solid #E6E3D8;border-left:6px solid #EED951;border-radius:6px;padding:12px 16px;margin-top:12px}
 .hero .row{display:flex;gap:18px;align-items:center}
 .hero .big{font-family:Lora,serif;font-size:34px;line-height:1.05;color:#1F3366;white-space:nowrap} .hero .bl{font-size:12.5px;color:#6F6E68;margin-top:2px}
@@ -73,12 +74,12 @@ CSS_M = """
 .chain .ar{align-self:center;color:#1F3366;font-weight:700;font-size:18px}
 .wk{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
 .wk .col{background:#fff;border:1px solid #E6E3D8;border-radius:6px;padding:8px 9px;min-height:120px}
-.wk .dh{font-weight:600;font-size:14px;color:#1F3366;border-bottom:2px solid #1F3366;padding-bottom:4px;margin-bottom:6px} .wk .dh span{display:block;font-weight:400;font-size:12px;color:#6F6E68}
-.wk .it{font-size:13.5px;line-height:1.35;padding:4px 0 4px 7px;border-left:3px solid #2F7D4F;margin-bottom:5px} .wk .it.ev2{border-left-color:#1F3366} .wk .it b{display:block}
+.wk .dh{font-weight:600;font-size:16px;color:#1F3366;border-bottom:2px solid #1F3366;padding-bottom:4px;margin-bottom:6px} .wk .dh span{display:block;font-weight:400;font-size:13.5px;color:#6F6E68}
+.wk .it{font-size:15.5px;line-height:1.35;padding:4px 0 4px 7px;border-left:3px solid #2F7D4F;margin-bottom:5px} .wk .it.ev2{border-left-color:#1F3366} .wk .it b{display:block}
 .wk .none{color:#B5B3AA;font-size:13px}
-.fl .h{font-weight:600;font-size:12.5px;color:#6F6E68;margin:8px 0 3px;text-transform:uppercase;letter-spacing:.05em}
-.fl .r{display:grid;grid-template-columns:46px 1fr 70px;align-items:center;gap:8px;margin:4px 0}
-.fl .r b{font-size:14.5px} .fl .bar{height:14px;border-radius:3px} .fl .bar.b{background:#2F7D4F} .fl .bar.s{background:#B8432F} .fl .v{text-align:right;font-size:14px;font-weight:600}
+.fl .h{font-weight:600;font-size:13.5px;color:#6F6E68;margin:8px 0 3px;text-transform:uppercase;letter-spacing:.05em}
+.fl .r{display:grid;grid-template-columns:52px 1fr 76px;align-items:center;gap:8px;margin:4px 0}
+.fl .r b{font-size:16px} .fl .bar{height:14px;border-radius:3px} .fl .bar.b{background:#2F7D4F} .fl .bar.s{background:#B8432F} .fl .v{text-align:right;font-size:15.5px;font-weight:600}
 """
 
 def esc(x): return H.escape(str(x), quote=False)
@@ -99,9 +100,18 @@ def chips(cs):
         out += f'<span class="chip {c}">{esc(sym)} {esc(pct)}</span>'
     return out
 
+import re as _re
+_NUM = _re.compile(r"(?<![\d/])[+−-]?(?:\d{1,3}(?:\.\d{3})+|\d+)(?:,\d+)?(?:\s?(?:%|tỷ USD|tỷ đồng|tỷ|triệu cổ phiếu|triệu|USD|bps))?")
+def boldnum(t):
+    def sub(m):
+        x = m.group(0)
+        return f"<b>{x}</b>" if (_re.search(r"[,.]\d|%|tỷ|triệu|USD|bps", x)) else x
+    parts = _re.split(r"(<[^>]+>)", str(t))
+    return "".join(p if p.startswith("<") else _NUM.sub(sub, p) for p in parts)
+
 def news(items):
     m = {"+": ("tg", "Tích cực"), "-": ("tr", "Tiêu cực"), "o": ("tn", "Theo dõi")}
-    return "".join(f'<p><span class="tag {m[i["s"]][0]}">{m[i["s"]][1]}</span>{chips(i.get("chips", []))}{rich(i["text"])}</p>' for i in items)
+    return "".join(f'<p><span class="tag {m[i["s"]][0]}">{m[i["s"]][1]}</span>{chips(i.get("chips", []))}{boldnum(rich(i["text"]))}</p>' for i in items)
 
 def hero(d):
     h = d.get("hero")
@@ -145,9 +155,9 @@ def table(rows):
 
 def shell(d, body, k):
     return f"""<!doctype html><html lang="vi"><head><meta charset="utf-8"><style>{CSS}</style>
-<style>{CSS_M}</style><style>.page .list p{{font-size:calc(19px*var(--k))}} .ev{{font-size:calc(18.5px*var(--k))}} .ev td{{padding:calc(10px*var(--k)) 6px}}</style></head>
+<style>{CSS_M}</style><style>.page .list p{{font-size:calc(21px*var(--k))}} .ev{{font-size:calc(18.5px*var(--k))}} .ev td{{padding:calc(10px*var(--k)) 6px}}</style></head>
 <body><div class="page" style="--k:{k}">
-<div class="top"><img src="data:image/png;base64,{LOGO}" alt="Weha"><div class="ed"><b>Bản tin sáng · 08:00</b>{esc(d["date_label"])}</div></div>
+<div class="top"><img src="data:image/png;base64,{LOGO}" alt="Weha"><div class="sunb">BẢN TIN SÁNG</div><div class="ed"><b>Bản tin sáng · 08:00</b>{esc(d["date_label"])}</div></div>
 {body}
 <div class="spacer"></div>
 <div class="foot"><div class="who"><b>Nguyễn Hoài</b><br>Weha · 0396 336 096</div>
