@@ -62,6 +62,23 @@ CSS_M = """
 .ev td:nth-child(2){font-weight:600;white-space:nowrap}
 .strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
 .page .grid{gap:10px}
+.chip{display:inline-block;font-size:13px;font-weight:600;padding:1px 7px;border-radius:10px;margin-right:6px;background:#EFECE2;color:#3D3D3A;white-space:nowrap}
+.chip.pos{background:#E3EFE6;color:#2F7D4F} .chip.neg{background:#F6E2DD;color:#B8432F}
+.hero{background:#fff;border:1px solid #E6E3D8;border-left:6px solid #EED951;border-radius:6px;padding:12px 16px;margin-top:12px}
+.hero .row{display:flex;gap:18px;align-items:center}
+.hero .big{font-family:Lora,serif;font-size:34px;line-height:1.05;color:#1F3366;white-space:nowrap} .hero .bl{font-size:12.5px;color:#6F6E68;margin-top:2px}
+.hero .tx{font-size:15.5px;line-height:1.4}
+.chain{display:flex;align-items:stretch;gap:6px;margin-top:10px}
+.chain .st{flex:1;background:#F5F4ED;border-radius:5px;padding:7px 9px;font-size:13.5px;line-height:1.3;font-weight:500}
+.chain .ar{align-self:center;color:#1F3366;font-weight:700;font-size:18px}
+.wk{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.wk .col{background:#fff;border:1px solid #E6E3D8;border-radius:6px;padding:8px 9px;min-height:120px}
+.wk .dh{font-weight:600;font-size:14px;color:#1F3366;border-bottom:2px solid #1F3366;padding-bottom:4px;margin-bottom:6px} .wk .dh span{display:block;font-weight:400;font-size:12px;color:#6F6E68}
+.wk .it{font-size:13.5px;line-height:1.35;padding:4px 0 4px 7px;border-left:3px solid #2F7D4F;margin-bottom:5px} .wk .it.ev2{border-left-color:#1F3366} .wk .it b{display:block}
+.wk .none{color:#B5B3AA;font-size:13px}
+.fl .h{font-weight:600;font-size:12.5px;color:#6F6E68;margin:8px 0 3px;text-transform:uppercase;letter-spacing:.05em}
+.fl .r{display:grid;grid-template-columns:46px 1fr 70px;align-items:center;gap:8px;margin:4px 0}
+.fl .r b{font-size:14.5px} .fl .bar{height:14px;border-radius:3px} .fl .bar.b{background:#2F7D4F} .fl .bar.s{background:#B8432F} .fl .v{text-align:right;font-size:14px;font-weight:600}
 """
 
 def esc(x): return H.escape(str(x), quote=False)
@@ -75,9 +92,52 @@ def tile(t):
     return (f'<div class="card"><p class="lab">{esc(t["label"])}</p><p class="v{vcls}">{esc(t["value"])}</p>'
             f'<p class="chg {cls}"{w}>{esc(t.get("note",""))}</p></div>')
 
+def chips(cs):
+    out = ""
+    for sym, pct in cs:
+        c = "pos" if str(pct).startswith("+") else ("neg" if str(pct).startswith(("−", "-")) else "")
+        out += f'<span class="chip {c}">{esc(sym)} {esc(pct)}</span>'
+    return out
+
 def news(items):
     m = {"+": ("tg", "Tích cực"), "-": ("tr", "Tiêu cực"), "o": ("tn", "Theo dõi")}
-    return "".join(f'<p><span class="tag {m[i["s"]][0]}">{m[i["s"]][1]}</span>{rich(i["text"])}</p>' for i in items)
+    return "".join(f'<p><span class="tag {m[i["s"]][0]}">{m[i["s"]][1]}</span>{chips(i.get("chips", []))}{rich(i["text"])}</p>' for i in items)
+
+def hero(d):
+    h = d.get("hero")
+    if not h: return ""
+    ch = "".join(("" if n == 0 else '<div class="ar">→</div>') + f'<div class="st">{rich(x)}</div>' for n, x in enumerate(h.get("chain", [])))
+    chain = f'<div class="chain">{ch}</div>' if ch else ""
+    return (f'<div class="hero"><div class="row"><div><div class="big">{esc(h["big"])}</div><div class="bl">{esc(h["label"])}</div></div>'
+            f'<div class="tx">{rich(h["text"])}</div></div>{chain}</div>')
+
+def week(d):
+    import datetime
+    dd, mm, yy = (int(x) for x in d["file_date"].split("-"))
+    mon = datetime.date(yy, mm, dd); mon -= datetime.timedelta(days=mon.weekday())
+    names = ["Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu"]
+    by = {}
+    for kind, rows in (("c", d.get("dividends", [])), ("e", d.get("events", []))):
+        for r in rows: by.setdefault(r[0], []).append((kind, r[1], r[2]))
+    cols = ""
+    for i in range(5):
+        day = mon + datetime.timedelta(days=i); key = day.strftime("%d/%m")
+        its = "".join(f'<div class="it{" ev2" if k == "e" else ""}"><b>{esc(a)}</b>{esc(b)}</div>' for k, a, b in by.get(key, []))
+        cols += f'<div class="col"><div class="dh">{key}<span>{names[i]}</span></div>{its or "<div class=none>—</div>"}</div>'
+    return f'<div class="wk">{cols}</div><p class="sub" style="margin-top:8px"><span style="color:#2F7D4F">▌</span> Cổ tức, quyền &nbsp; <span style="color:#1F3366">▌</span> Sự kiện</p>'
+
+def flow_card(title, f):
+    mx = max([abs(v) for _, v in f["buy"] + f["sell"]] or [1])
+    def rows(lst, cls):
+        return "".join(f'<div class="r"><b>{esc(s)}</b><div><div class="bar {cls}" style="width:{max(4, abs(v)/mx*100):.0f}%"></div></div>'
+                       f'<div class="v {"pos" if v>0 else "neg"}">{"+" if v>0 else "−"}{abs(v):,.0f}</div></div>'.replace(",", ".") for s, v in lst)
+    return f'<div class="card fl"><h3>{esc(title)}</h3><div class="h">Mua ròng nhiều nhất (tỷ)</div>{rows(f["buy"], "b")}<div class="h">Bán ròng nhiều nhất (tỷ)</div>{rows(f["sell"], "s")}</div>'
+
+def flows(d):
+    f = d.get("flows")
+    if not f: return ""
+    return (f'<h2><span class="no">05</span> Dòng tiền phiên {esc(f.get("date",""))}</h2><p class="sub">Giá trị ròng, tỷ đồng</p>'
+            f'<div class="grid g2">{flow_card("Khối ngoại", f["foreign"])}{flow_card("Tự doanh", f["prop"])}</div>')
 
 def table(rows):
     tr = "".join(f"<tr><td>{esc(r[0])}</td><td>{esc(r[1])}</td><td>{esc(r[2])}</td></tr>" for r in rows)
@@ -100,6 +160,7 @@ def page1(d):
 <h1>{rich(d["headline"])}</h1>
 <p class="lede">{rich(d["lede"])}</p>
 <div class="strip mini">{"".join(tile(t) for t in d["strip"])}</div>
+{hero(d)}
 <h2><span class="no">01</span> Quốc tế</h2>
 <p class="sub">{esc(d.get("intl_sub","% so với phiên trước"))}</p>
 <div class="grid g5 mini">{"".join(tile(t) for t in d["intl_tiles"])}</div>
@@ -116,11 +177,9 @@ def page2(d):
 <p class="sub">Kết quả kinh doanh và tin mới</p>
 <div class="card list">{news(d["company_news"])}</div>
 <h2><span class="no">04</span> Lịch sự kiện</h2>
-<p class="sub">Cổ tức, quyền và sự kiện trong tuần · giờ Việt Nam</p>
-<div class="grid g2">
- <div class="card"><h3>Cổ tức & quyền</h3>{table(d["dividends"])}</div>
- <div class="card"><h3>Sự kiện quan trọng</h3>{table(d["events"])}</div>
-</div>"""
+<p class="sub">Tuần này · giờ Việt Nam</p>
+{week(d)}
+{flows(d)}"""
 
 async def render(d, out):
     from playwright.async_api import async_playwright

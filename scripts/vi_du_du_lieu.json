@@ -1,277 +1,333 @@
 {
- "file_date": "03-11-2026",
- "date_label": "Thứ Ba, 03/11/2026",
- "date_short": "Thứ Ba 03/11/2026",
- "headline": "Xuất nhập khẩu 10 tháng vượt <mark>1.000 tỷ USD</mark>; thị trường chờ bầu cử giữa kỳ Mỹ và báo cáo việc làm cuối tuần",
- "lede": "VN-Index vừa mất 31 điểm về 1.710,72; nhiều đợt chia cổ tức trong tuần.",
+ "file_date": "16-11-2026",
+ "date_label": "Thứ Hai, 16/11/2026",
+ "date_short": "Thứ Hai 16/11/2026",
+ "headline": "PPI Mỹ cao nhất gần <mark>4 năm</mark>, Nasdaq giảm 0,91%; VN-Index đi ngang ở 1.734,93 điểm",
+ "lede": "Khối ngoại mua ròng nhẹ 16 tỷ, tự doanh mua ròng 116 tỷ; NHNN hút ròng hơn 18.000 tỷ qua OMO.",
  "strip": [
   {
-   "label": "VN-Index 02/11",
-   "value": "1.710,72",
-   "note": "−1,77%",
-   "tone": "down"
+   "label": "VN-Index 13/11",
+   "value": "1.734,93",
+   "note": "+0,01%",
+   "tone": "up"
   },
   {
-   "label": "VN30 02/11",
-   "value": "1.813,41",
-   "note": "−2,24%",
-   "tone": "down"
+   "label": "VN30 13/11",
+   "value": "1.844,91",
+   "note": "+0,30%",
+   "tone": "up"
   },
   {
-   "label": "Khối ngoại 02/11",
-   "value": "−457 tỷ",
-   "note": "Bán mạnh MBB, VCB, ACB",
-   "value_red": true
+   "label": "Khối ngoại 13/11",
+   "value": "+16 tỷ",
+   "note": "Mua POW, VJC; bán FPT"
   },
   {
-   "label": "Tự doanh 02/11",
-   "value": "−205 tỷ",
-   "note": "Bán mạnh MWG, BID, SSI",
-   "value_red": true
+   "label": "Tự doanh 13/11",
+   "value": "+116 tỷ",
+   "note": "Mua GMD, VJC, REE"
   }
  ],
- "intl_sub": "Đóng cửa phiên 02/11 · % so với phiên trước",
+ "intl_sub": "Đóng cửa phiên 13/11 · % so với phiên trước",
  "intl_tiles": [
   {
    "label": "S&P 500",
-   "value": "7.632,91",
-   "note": "+0,70%",
-   "tone": "up"
+   "value": "7.561,67",
+   "note": "−0,40%",
+   "tone": "down"
   },
   {
    "label": "Nasdaq",
-   "value": "25.666,29",
-   "note": "+0,90%",
-   "tone": "up"
+   "value": "25.136,27",
+   "note": "−0,91%",
+   "tone": "down"
   },
   {
    "label": "Vàng (USD/oz)",
-   "value": "3.967,6",
-   "note": "+1,37%",
+   "value": "3.886,3",
+   "note": "+0,03%",
    "tone": "up"
   },
   {
    "label": "Dầu Brent",
-   "value": "106,09",
-   "note": "−3,33%",
+   "value": "94,42",
+   "note": "−0,10%",
    "tone": "down"
   },
   {
    "label": "UST 10 năm",
-   "value": "4,908%",
-   "note": "−2 bps",
-   "tone": "down"
+   "value": "5,15%",
+   "note": "+5 bps",
+   "tone": "up"
   }
  ],
  "intl_news": [
   {
-   "s": "o",
-   "text": "<b>Fed</b> giữ lãi suất 3,75–4,00% (phiếu 10–2). PCE tháng 9 tăng 3,6%, lõi 3,1%; GDP quý 3 Mỹ +3,4%. FedWatch: <b>70%</b> khả năng tăng lãi suất ngày 09/12."
+   "s": "-",
+   "text": "<b>Mỹ</b>: lạm phát giá sản xuất (PPI) cao nhất gần 4 năm, tạo thêm sức ép để <b>Fed</b> tăng lãi suất trong tháng 12."
   },
   {
    "s": "-",
-   "text": "<b>Trung Quốc</b>: PMI sản xuất tháng 10 giảm còn 49,3, phi sản xuất 49,7, cùng dưới ngưỡng 50."
+   "text": "<b>Nasdaq</b> giảm khi cổ phiếu <b>Nvidia</b> tiếp tục bị bán; Dow Jones +0,10% lên 52.347,55."
   },
   {
    "s": "o",
-   "text": "<b>BoC</b> tăng 25 bps lên 2,5%; <b>BOJ</b> giữ 1,25%, nâng kế hoạch bán ETF lên 860 tỷ yên/năm từ 01/2027."
+   "text": "<b>Dầu</b>: giá hoàn tất tuần giảm do tín hiệu dư cung; Brent đóng cửa 94,42 USD."
   },
   {
-   "s": "+",
-   "text": "<b>Dầu</b> hạ nhiệt: Brent về quanh 106 USD, WTI 97 USD; OPEC+ giữ nguyên sản lượng tháng 12."
+   "s": "o",
+   "text": "<b>Mỹ</b> hoãn, hủy hàng nghìn chuyến bay do sự cố hệ thống liên lạc (FAA)."
   }
  ],
  "dom_tiles": [
   {
-   "label": "XNK 10T (tỷ USD)",
-   "value": "1.010,6",
-   "note": "+32,3% so cùng kỳ"
+   "label": "Xuất khẩu T10",
+   "value": "64,7 tỷ",
+   "note": "USD · xuất siêu 7,3 tỷ"
   },
   {
    "label": "GDP quý 3",
    "value": "9,95%",
-   "note": "Quý 2: 8,39%"
+   "note": "Quý 2: 8,81%"
   },
   {
-   "label": "CPI tháng 9",
-   "value": "5,08%",
-   "note": "Tháng 8: 4,89%"
+   "label": "CPI tháng 10",
+   "value": "5,09%",
+   "note": "Lõi 4,04%; T9: 5,08%"
   },
   {
    "label": "Tỷ giá trung tâm",
-   "value": "25.631",
-   "note": "−6 đồng"
+   "value": "25.637",
+   "note": "+14 đồng"
   },
   {
-   "label": "USD/VND tự do",
-   "value": "25.750",
-   "note": "−52 đồng"
+   "label": "OMO ròng 13/11",
+   "value": "−18.154 tỷ",
+   "note": "NHNN hút ròng"
   }
  ],
  "dom_news": [
   {
    "s": "+",
-   "text": "<b>Xuất nhập khẩu</b> 10 tháng đạt kỷ lục <b>1.010,6 tỷ USD</b>, tăng 32,3% so với cùng kỳ."
-  },
-  {
-   "s": "+",
-   "text": "Từ 01/11: <b>thuế TTĐB xăng về 0%</b> đến 31/03/2027, giá xăng giảm 1.575–1.804 đ/lít; <b>giá điện</b> bình quân giảm 2%."
-  },
-  {
-   "s": "+",
-   "text": "Giảm <b>30% thuế TNDN</b> năm 2026–2027 cho doanh nghiệp và hộ kinh doanh có doanh thu dưới 10 tỷ/năm."
+   "text": "<b>Xuất khẩu</b> tháng 10 đạt 64,7 tỷ USD, nhập khẩu 57,4 tỷ USD, <b>xuất siêu 7,3 tỷ USD</b>."
   },
   {
    "s": "o",
-   "text": "Tái cơ cấu vốn Nhà nước 2026–2030: giảm sở hữu tại <b>VCB, BID</b> xuống tối thiểu 65%; thoái vốn tại <b>GVR, HVN</b>."
+   "text": "<b>CPI</b> tháng 10 tăng 5,09% so cùng kỳ, lạm phát cơ bản 4,04% (tháng 9: 4,45%)."
   },
   {
-   "s": "-",
-   "text": "<b>Khối ngoại</b> bán ròng hơn 24.000 tỷ trên HOSE trong tháng 10, lũy kế 10 tháng khoảng 122.000 tỷ."
+   "s": "+",
+   "text": "<b>Vietcombank</b> giảm lãi vay đến 3%/năm, gần 25.000 khách hàng được hưởng lợi; lãi suất ngân hàng hạ nhiệt."
+  },
+  {
+   "s": "o",
+   "text": "<b>NHNN</b> hút ròng 18.154 tỷ đồng qua thị trường mở phiên 13/11."
+  },
+  {
+   "s": "o",
+   "text": "<b>Thủ tướng</b> đề xuất lập danh mục dự án hạ tầng ưu tiên của ASEAN đến năm 2040."
   }
  ],
  "company_news": [
   {
    "s": "+",
-   "text": "<b>VHM</b> lãi quý 3 đạt 23.100 tỷ (+453%), 9 tháng hoàn thành 113% dự báo năm; doanh số chờ ghi nhận 185.600 tỷ."
+   "text": "<b>HPG</b> lập công ty năng lượng tái tạo vốn gần 650 tỷ đồng.",
+   "chips": [
+    [
+     "HPG",
+     "0,0%"
+    ]
+   ]
   },
   {
    "s": "+",
-   "text": "<b>BSR</b> lãi kỷ lục 8.970 tỷ, gấp gần 10 lần cùng kỳ nhờ crack spread nới rộng."
-  },
-  {
-   "s": "+",
-   "text": "<b>VIC</b> lãi 9 tháng 43.700 tỷ, vượt 25% kế hoạch năm; VinFast giao 82.580 xe trong quý 3 (+116%)."
-  },
-  {
-   "s": "+",
-   "text": "<b>MWG</b> lãi quý 3 +97%, vượt kế hoạch năm; <b>CTG</b> LNTT 13.689 tỷ (+29%), vượt VCB về lợi nhuận quý."
+   "text": "<b>NKG</b>: con gái Chủ tịch Hồ Minh Quang đăng ký mua 5 triệu cổ phiếu.",
+   "chips": [
+    [
+     "NKG",
+     "−2,0%"
+    ]
+   ]
   },
   {
    "s": "-",
-   "text": "<b>PNJ</b> lỗ quý 3 gần 258 tỷ do dự phòng kim cương ~1.700 tỷ; cổ phiếu người nhà Chủ tịch bị bán giải chấp."
-  },
-  {
-   "s": "-",
-   "text": "<b>HVN</b> (công ty mẹ) lỗ 284 tỷ do chi phí nhiên liệu tăng thêm 4.360 tỷ."
+   "text": "<b>VDP</b> (Vidipha): sáu lãnh đạo đồng loạt từ nhiệm sau biến động lớn về cổ đông."
   },
   {
    "s": "o",
-   "text": "<b>MBB</b> lập ngân hàng con vốn 3.000 tỷ tại Trung tâm Tài chính quốc tế; <b>DPR</b> trình thưởng cổ phiếu 1:1."
+   "text": "<b>DMX</b> (Điện Máy Xanh) phát hành lô trái phiếu 100 tỷ đồng.",
+   "chips": [
+    [
+     "DMX",
+     "−1,2%"
+    ]
+   ]
+  },
+  {
+   "s": "o",
+   "text": "<b>Chứng khoán Beta</b> chào bán 40 triệu cổ phiếu để tăng vốn gấp đôi."
+  },
+  {
+   "s": "o",
+   "text": "<b>Viettel</b> nắm 4,7 tỷ cổ phiếu trị giá 262.600 tỷ, gồm <b>MBB, VGI, VTP</b>.",
+   "chips": [
+    [
+     "MBB",
+     "−0,3%"
+    ],
+    [
+     "VGI",
+     "+1,0%"
+    ],
+    [
+     "VTP",
+     "+0,1%"
+    ]
+   ]
+  },
+  {
+   "s": "o",
+   "text": "<b>SCIC</b> rao bán vốn góp tại một trường đại học có cổ đông IDICO, Habeco."
   }
  ],
  "dividends": [
   [
-   "03/11",
-   "ISH",
-   "Cổ tức tiền 12%"
+   "16/11",
+   "NT2",
+   "Chi trả cổ tức tiền 10%"
   ],
   [
-   "03/11",
-   "C69 · KTC",
-   "Cổ tức tiền 6% · 4%"
+   "20/11",
+   "GAS · NTC",
+   "Chi trả tiền 25% · 60%"
   ],
   [
-   "04/11",
-   "SGN",
-   "Cổ tức tiền 25%"
+   "20/11",
+   "TNG · VNL",
+   "Chi trả tiền 5% · 7%"
   ],
   [
-   "04/11",
-   "PC1",
-   "Thưởng cổ phiếu 20:3"
-  ],
-  [
-   "04/11",
-   "CCC",
-   "Thưởng cổ phiếu 25:1"
-  ],
-  [
-   "04/11",
-   "PNT · TMX",
-   "Cổ tức tiền 5% · 3%"
-  ],
-  [
-   "05/11",
-   "WSB · PCC",
-   "Cổ tức tiền 20% · 15%"
-  ],
-  [
-   "05/11",
-   "QTP",
-   "Cổ tức tiền 7%"
-  ],
-  [
-   "05/11",
-   "TBD · ECO · TV6",
-   "Thưởng 2:1 · 50:3 · 20:3"
-  ],
-  [
-   "06/11",
-   "VNC · RBC",
-   "Cổ tức tiền 6% · 1%"
-  ],
-  [
-   "09/11",
-   "MFS · SFI · VFG",
-   "Tiền 25% · 10% · 10%"
-  ],
-  [
-   "09/11",
-   "VBB",
-   "Quyền mua tỷ lệ 4:1"
+   "20/11",
+   "G36",
+   "Chi trả tiền 4,18%"
   ]
  ],
  "events": [
   [
-   "03/11",
-   "Mỹ",
-   "Bầu cử giữa kỳ; JOLTS (22:00)"
+   "16/11",
+   "SGN · GIL",
+   "Họp ĐHCĐ bất thường"
   ],
   [
-   "03/11",
-   "NVL",
-   "Nội bộ đăng ký mua 30tr cp"
-  ],
-  [
-   "03/11",
-   "DXG",
-   "Nội bộ đăng ký mua 15tr cp"
-  ],
-  [
-   "04/11",
-   "VHM",
-   "HĐND HN xét cơ chế đường sắt"
-  ],
-  [
-   "04/11",
-   "CII",
-   "Đại hội cổ đông bất thường"
-  ],
-  [
-   "04/11",
-   "Mỹ",
-   "ADP (20:15), ISM dịch vụ (22:00)"
-  ],
-  [
-   "04/11",
-   "EU",
-   "Lạm phát Eurozone (17:00)"
-  ],
-  [
-   "06/11",
-   "Mỹ",
-   "Việc làm phi nông nghiệp (20:30)"
-  ],
-  [
-   "06/11",
-   "VDS",
-   "Vợ Chủ tịch mua 4 triệu cp"
-  ],
-  [
-   "20/11",
-   "VN30F",
-   "Đáo hạn phái sinh tháng 11"
+   "17/11",
+   "TIN",
+   "Thông báo ĐHCĐ bất thường (dự kiến T12)"
   ]
- ]
+ ],
+ "hero": {
+  "big": "gần 4 năm",
+  "label": "PPI Mỹ ở mức cao nhất",
+  "text": "Lạm phát giá sản xuất Mỹ tăng mạnh, <b>Fed</b> thêm lý do tăng lãi suất trong tháng 12.",
+  "chain": [
+   "PPI Mỹ cao nhất gần 4 năm",
+   "Fed thêm sức ép tăng lãi suất T12",
+   "UST 10 năm 5,15% (+5 bps)",
+   "Chứng khoán Mỹ giảm: Nasdaq −0,91%"
+  ]
+ },
+ "flows": {
+  "date": "13/11",
+  "foreign": {
+   "buy": [
+    [
+     "POW",
+     86.4
+    ],
+    [
+     "VJC",
+     57.8
+    ],
+    [
+     "HDB",
+     57.6
+    ],
+    [
+     "MSN",
+     56.1
+    ],
+    [
+     "TCB",
+     53.0
+    ]
+   ],
+   "sell": [
+    [
+     "FPT",
+     -221.2
+    ],
+    [
+     "GMD",
+     -56.4
+    ],
+    [
+     "BID",
+     -37.4
+    ],
+    [
+     "SHB",
+     -33.3
+    ],
+    [
+     "NVL",
+     -31.6
+    ]
+   ]
+  },
+  "prop": {
+   "buy": [
+    [
+     "GMD",
+     200.9
+    ],
+    [
+     "VJC",
+     105.1
+    ],
+    [
+     "REE",
+     78.5
+    ],
+    [
+     "CTD",
+     43.8
+    ],
+    [
+     "NLG",
+     42.8
+    ]
+   ],
+   "sell": [
+    [
+     "VIX",
+     -269.8
+    ],
+    [
+     "ACB",
+     -147.9
+    ],
+    [
+     "DVN",
+     -24.4
+    ],
+    [
+     "MWG",
+     -16.6
+    ],
+    [
+     "VNM",
+     -15.5
+    ]
+   ]
+  }
+ }
 }
