@@ -56,7 +56,7 @@ CSS_M = """
 .page h1{font-size:38px;font-weight:600;line-height:1.25;letter-spacing:-.01em;word-spacing:-.04em;color:#141413} .page h1 b,.page h1 mark{font-weight:800;color:#141413;background:none;padding:0;box-shadow:inset 0 -.46em 0 #EED951} .page .lede{font-size:18.5px;color:#3D3C38;font-weight:500;white-space:nowrap}
 .page h2{font-size:25px;margin:16px 0 4px;padding-top:10px} .page .sub{font-size:16px;margin:0 0 8px}
 .page .lab{font-size:16px} .mini .v{font-size:30px} .page .chg{font-size:16.5px}
-.page .list p{font-size:27px;line-height:1.42;padding:8px 0;text-align:left;text-wrap:pretty;hyphens:none;overflow-wrap:normal} .page .tag{font-size:13.5px;padding:3px 8px}
+.page .list p{font-size:27px;line-height:1.42;padding:8px 0;text-align:left;text-wrap:wrap;hyphens:none;overflow-wrap:normal} .page .tag{font-size:13.5px;padding:3px 8px}
 .page .card h3{font-size:20px;margin-bottom:6px}
 .ev{font-size:18.5px} .ev th{font-size:15px} .ev td{padding:10px 6px} .ev td:first-child{white-space:nowrap;color:#6F6E68}
 .ev td:nth-child(2){font-weight:600;white-space:nowrap}
