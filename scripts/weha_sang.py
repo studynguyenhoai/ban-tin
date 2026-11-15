@@ -62,7 +62,7 @@ CSS_M = """
 .ev td:nth-child(2){font-weight:600;white-space:nowrap}
 .strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
 .page .grid{gap:10px}
-.chip{display:inline-block;font-size:15px;font-weight:600;padding:1px 7px;border-radius:10px;margin-right:6px;background:#EFECE2;color:#3D3D3A;white-space:nowrap}
+.chip{display:inline-block;font-size:15px;font-weight:600;padding:1px 7px;border-radius:10px;margin-left:4px;background:#EFECE2;color:#3D3D3A;white-space:nowrap}
 .chip.pos{background:#E3EFE6;color:#2F7D4F} .chip.neg{background:#F6E2DD;color:#B8432F}
 .sunb{background:#EED951;color:#1F3366;font-weight:800;font-size:25px;letter-spacing:.14em;padding:7px 18px;border-radius:6px}
 .ed b.bs{display:block;width:fit-content;margin-left:auto;font-size:25px;font-weight:800;letter-spacing:.12em;color:#1F3366;padding-bottom:3px;border-bottom:4px solid #EED951;margin-bottom:5px}
@@ -113,7 +113,7 @@ def boldnum(t):
 
 def news(items):
     m = {"+": ("tg", "Tích cực"), "-": ("tr", "Tiêu cực"), "o": ("tn", "Theo dõi")}
-    return "".join(f'<p><span class="tag {m[i["s"]][0]}">{m[i["s"]][1]}</span>{chips(i.get("chips", []))}{boldnum(rich(i["text"]))}</p>' for i in items)
+    return "".join(f'<p><span class="tag {m[i["s"]][0]}">{m[i["s"]][1]}</span>{boldnum(rich(i["text"]))} {chips(i.get("chips", []))}</p>' for i in items)
 
 def hero(d):
     h = d.get("hero")
@@ -148,7 +148,7 @@ def flow_card(title, f):
 def flows(d):
     f = d.get("flows")
     if not f: return ""
-    return (f'<h2><span class="no">05</span> Dòng tiền phiên {esc(f.get("date",""))}</h2><p class="sub">Giá trị ròng, tỷ đồng</p>'
+    return (f'<h2><span class="no">04</span> Dòng tiền phiên {esc(f.get("date",""))}</h2><p class="sub">Giá trị ròng, tỷ đồng</p>'
             f'<div class="grid g2">{flow_card("Khối ngoại", f["foreign"])}{flow_card("Tự doanh", f["prop"])}</div>')
 
 def table(rows):
@@ -188,10 +188,10 @@ def page2(d):
 <h2 style="margin-top:6px;border-top:0;padding-top:0"><span class="no">03</span> Doanh nghiệp đáng chú ý</h2>
 <p class="sub">Kết quả kinh doanh và tin mới</p>
 <div class="card list">{news(d["company_news"])}</div>
-<h2><span class="no">04</span> Lịch sự kiện</h2>
+{flows(d)}
+<h2><span class="no">05</span> Lịch sự kiện</h2>
 <p class="sub">Tuần này · giờ Việt Nam</p>
-{week(d)}
-{flows(d)}"""
+{week(d)}"""
 
 async def render(d, out):
     from playwright.async_api import async_playwright
