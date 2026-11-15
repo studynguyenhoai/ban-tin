@@ -20,7 +20,7 @@
   {
    "label": "Khối ngoại 13/11",
    "value": "+16 tỷ",
-   "note": "Mua POW, VJC; bán FPT",
+   "note": "Mua POW; bán FPT",
    "tone": "up"
   },
   {
@@ -85,7 +85,7 @@
  ],
  "dom_tiles": [
   {
-   "label": "Xuất khẩu T10, USD",
+   "label": "Xuất khẩu T10",
    "value": "64,7 tỷ",
    "note": "Xuất siêu 7,3 tỷ"
   },
@@ -98,7 +98,7 @@
   {
    "label": "CPI tháng 10",
    "value": "5,09%",
-   "note": "Lõi 4,04%; T9: 5,08%",
+   "note": "Lõi 4,04%",
    "tone": "up"
   },
   {
@@ -110,7 +110,7 @@
   {
    "label": "OMO ròng (tỷ)",
    "value": "−18.154",
-   "note": "NHNN hút ròng 13/11"
+   "note": "Hút ròng 13/11"
   }
  ],
  "dom_news": [

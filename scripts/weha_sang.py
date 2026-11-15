@@ -54,9 +54,9 @@ table{font-size:13px} td{padding:5px 4px} th{padding:4px}
 """
 CSS_M = """
 .page h1{font-size:38px;font-weight:600;line-height:1.25;letter-spacing:-.01em;word-spacing:-.04em;color:#141413} .page h1 b,.page h1 mark{font-weight:800;color:#141413;background:none;padding:0;box-shadow:inset 0 -.46em 0 #EED951} .page .lede{font-size:18.5px;color:#3D3C38;font-weight:500;white-space:nowrap}
-.page h2{font-size:25px;margin:16px 0 4px;padding-top:10px} .page .sub{font-size:16px;margin:0 0 8px}
-.page .lab{font-size:16px} .mini .v{font-size:30px} .page .chg{font-size:16.5px}
-.page .list p{font-size:27px;line-height:1.42;padding:8px 0;text-align:left;text-wrap:wrap;hyphens:none;overflow-wrap:normal} .page .tag{font-size:13.5px;padding:3px 8px}
+.page h2{font-size:25px;margin:16px 0 4px;padding-top:10px} .page .sub{display:none}
+.page .lab{font-size:18.5px} .mini .v{font-size:33px} .page .chg{font-size:18px}
+.page .list p{font-size:27px;line-height:1.42;padding:8px 0;text-align:left;text-wrap:wrap;hyphens:none;overflow-wrap:normal} .page .tag{font-size:15.5px;padding:4px 10px;margin-right:6px;vertical-align:middle;position:relative;top:-2px}
 .page .card h3{font-size:20px;margin-bottom:6px}
 .ev{font-size:18.5px} .ev th{font-size:15px} .ev td{padding:10px 6px} .ev td:first-child{white-space:nowrap;color:#6F6E68}
 .ev td:nth-child(2){font-weight:600;white-space:nowrap}
@@ -87,7 +87,7 @@ CSS_M = """
 .fl .r b{font-size:16px} .fl .bar{height:14px;border-radius:3px} .fl .bar.b{background:#2F7D4F} .fl .bar.s{background:#B8432F} .fl .v{text-align:right;font-size:15.5px;font-weight:600}
 .fl .h{font-size:16px;margin:12px 0 4px} .fl .r{grid-template-columns:64px 1fr 90px;margin:6px 0} .fl .r b{font-size:20px} .fl .bar{height:19px} .fl .v{font-size:19.5px}
 .wk .it{font-size:19.5px} .wk .dh{font-size:21px} .wk .dh span{font-size:16px} .wk .col{min-height:190px} .wk .none{font-size:16px}
-.page .sub{font-size:18px}
+.page .sub{display:none}
 """
 
 def esc(x): return H.escape(str(x), quote=False)
@@ -121,6 +121,11 @@ def chips(cs):
 import re as _re
 _NUM = _re.compile(r"(?<![\d/])[+−-]?(?:\d{1,3}(?:\.\d{3})+|\d+)(?:,\d+)?(?:\s?(?:%|tỷ USD|tỷ đồng|tỷ|triệu cổ phiếu|triệu|USD|bps))?")
 def boldnum(t, color=True):
+    used = [0]
+    def plain(x):
+        if color and used[0] >= 1: return x
+        used[0] += 1
+        return f"<b>{x}</b>"
     def sub(m, pre=""):
         x = m.group(0).replace(" ", "\u00a0")
         if not _re.search(r"[,.]\d|%|tỷ|triệu|USD|bps", x): return x
@@ -130,10 +135,10 @@ def boldnum(t, color=True):
         elif x.startswith(("−", "-")): cls = "neg"
         elif "%" in x or "bps" in x:
             ctx = pre[-18:].lower()
-            if _re.search(r"lãi (vay|suất)", ctx): return f"<b>{x}</b>"
+            if _re.search(r"lãi (vay|suất)", ctx): return plain(x)
             if _re.search(r"giảm|hạ |xuống|lỗ", ctx): cls = "neg"
             elif _re.search(r"tăng|lên ", ctx): cls = "pos"
-        return f'<b class="{cls}">{x}</b>' if cls else f"<b>{x}</b>"
+        return f'<b class="{cls}">{x}</b>' if cls else plain(x)
     parts = _re.split(r"(<[^>]+>)", shorten(t))
     out = ""
     for p in parts:
