@@ -10,7 +10,7 @@ CSS = """
 *{box-sizing:border-box} body{margin:0;background:#F5F4ED;}
 .page{width:1080px;padding:56px 64px 40px;font-family:Inter,sans-serif;color:#141413;font-variant-numeric:tabular-nums;background:#F5F4ED}
 .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px}
-.ed{text-align:right;font-size:13px;color:#6F6E68;line-height:1.45} .ed b{display:block;color:#141413;font-size:15px;font-weight:600}
+.ed{text-align:right;font-size:13px;color:#141413;font-weight:600;line-height:1.45} .ed b{display:block;color:#141413;font-size:15px;font-weight:600}
 .pill{display:inline-block;background:#141413;color:#fff;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:3px;margin-bottom:10px}
 .brand{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:#6F6E68;margin:0 0 8px}
 h1{font-family:Lora,serif;font-weight:400;font-size:38px;line-height:1.22;margin:0 0 14px;letter-spacing:-.005em}
@@ -53,7 +53,7 @@ table{font-size:13px} td{padding:5px 4px} th{padding:4px}
 .foot .disc{font-size:10.5px}
 """
 CSS_M = """
-.page h1{font-size:38px} .page .lede{font-size:20.5px}
+.page h1{font-size:38px;font-weight:600;line-height:1.25;letter-spacing:-.01em;word-spacing:-.04em;color:#141413} .page h1 b,.page h1 mark{font-weight:800;color:#141413;background:none;padding:0;box-shadow:inset 0 -.2em 0 #EED951} .page .lede{font-size:18.5px;color:#3D3C38;font-weight:500;white-space:nowrap}
 .page h2{font-size:25px;margin:16px 0 4px;padding-top:10px} .page .sub{font-size:16px;margin:0 0 8px}
 .page .lab{font-size:16px} .mini .v{font-size:30px} .page .chg{font-size:16.5px}
 .page .list p{font-size:21px;line-height:1.42;padding:8px 0} .page .tag{font-size:13.5px;padding:3px 8px}
@@ -67,6 +67,9 @@ CSS_M = """
 .sunb{background:#EED951;color:#1F3366;font-weight:800;font-size:25px;letter-spacing:.14em;padding:7px 18px;border-radius:6px}
 .ed b.bs{display:block;width:fit-content;margin-left:auto;font-size:25px;font-weight:800;letter-spacing:.12em;color:#1F3366;padding-bottom:3px;border-bottom:4px solid #EED951;margin-bottom:5px}
 .pill{display:none}
+.tk{background:#F3E7C6;color:#7A5A12}
+.imp{display:block;font-size:.84em;font-weight:700;color:#141413;margin:3px 0 0 0}
+.page .lab{color:#141413;font-weight:600}
 .hero{background:#fff;border:1px solid #E6E3D8;border-left:6px solid #EED951;border-radius:6px;padding:12px 16px;margin-top:12px}
 .hero .row{display:flex;gap:18px;align-items:center}
 .hero .big{font-family:Lora,serif;font-size:34px;line-height:1.05;color:#1F3366;white-space:nowrap} .hero .bl{font-size:12.5px;color:#6F6E68;margin-top:2px}
@@ -76,10 +79,10 @@ CSS_M = """
 .chain .ar{align-self:center;color:#1F3366;font-weight:700;font-size:18px}
 .wk{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
 .wk .col{background:#fff;border:1px solid #E6E3D8;border-radius:6px;padding:8px 9px;min-height:120px}
-.wk .dh{font-weight:600;font-size:16px;color:#1F3366;border-bottom:2px solid #1F3366;padding-bottom:4px;margin-bottom:6px} .wk .dh span{display:block;font-weight:400;font-size:13.5px;color:#6F6E68}
+.wk .dh{font-weight:600;font-size:16px;color:#1F3366;border-bottom:2px solid #1F3366;padding-bottom:4px;margin-bottom:6px} .wk .dh span{display:block;font-weight:600;font-size:13.5px;color:#141413}
 .wk .it{font-size:15.5px;line-height:1.35;padding:4px 0 4px 7px;border-left:3px solid #2F7D4F;margin-bottom:5px} .wk .it.ev2{border-left-color:#1F3366} .wk .it b{display:block}
 .wk .none{color:#B5B3AA;font-size:13px}
-.fl .h{font-weight:600;font-size:13.5px;color:#6F6E68;margin:8px 0 3px;text-transform:uppercase;letter-spacing:.05em}
+.fl .h{font-weight:700;font-size:13.5px;color:#141413;margin:8px 0 3px;text-transform:uppercase;letter-spacing:.05em}
 .fl .r{display:grid;grid-template-columns:52px 1fr 76px;align-items:center;gap:8px;margin:4px 0}
 .fl .r b{font-size:16px} .fl .bar{height:14px;border-radius:3px} .fl .bar.b{background:#2F7D4F} .fl .bar.s{background:#B8432F} .fl .v{text-align:right;font-size:15.5px;font-weight:600}
 """
@@ -87,12 +90,21 @@ CSS_M = """
 def esc(x): return H.escape(str(x), quote=False)
 def rich(x): return str(x)
 
+import re as _re0
+def _round_big(m):
+    x = m.group(0)
+    v = float(x.replace(".", "").replace(",", "."))
+    return f"{round(v):,}".replace(",", ".") if v >= 1000 else x
+_BIG = _re0.compile(r"(?<![\d.,])\d{1,3}(?:\.\d{3})+,\d+(?![\d%])")
+def shorten(t):
+    return _BIG.sub(_round_big, str(t))
+
 def tile(t):
     tone = t.get("tone", "")
     cls = {"up": "pos", "down": "neg", "": "mut"}.get(tone, "mut")
-    vcls = ' neg' if t.get("value_red") else ''
+    vcls = ''
     w = '' if tone else ' style="font-weight:500"'
-    return (f'<div class="card"><p class="lab">{esc(t["label"])}</p><p class="v{vcls}">{esc(t["value"])}</p>'
+    return (f'<div class="card"><p class="lab">{esc(t["label"])}</p><p class="v{vcls}">{esc(shorten(t["value"]))}</p>'
             f'<p class="chg {cls}"{w}>{esc(t.get("note",""))}</p></div>')
 
 def chips(cs):
@@ -104,16 +116,35 @@ def chips(cs):
 
 import re as _re
 _NUM = _re.compile(r"(?<![\d/])[+−-]?(?:\d{1,3}(?:\.\d{3})+|\d+)(?:,\d+)?(?:\s?(?:%|tỷ USD|tỷ đồng|tỷ|triệu cổ phiếu|triệu|USD|bps))?")
-def boldnum(t):
-    def sub(m):
+def boldnum(t, color=True):
+    def sub(m, pre=""):
         x = m.group(0)
-        return f"<b>{x}</b>" if (_re.search(r"[,.]\d|%|tỷ|triệu|USD|bps", x)) else x
-    parts = _re.split(r"(<[^>]+>)", str(t))
-    return "".join(p if p.startswith("<") else _NUM.sub(sub, p) for p in parts)
+        if not _re.search(r"[,.]\d|%|tỷ|triệu|USD|bps", x): return x
+        cls = ""
+        if not color: return f"<b>{x}</b>"
+        if x.startswith("+"): cls = "pos"
+        elif x.startswith(("−", "-")): cls = "neg"
+        elif "%" in x or "bps" in x:
+            ctx = pre[-18:].lower()
+            if _re.search(r"giảm|hạ |xuống|lỗ", ctx): cls = "neg"
+            elif _re.search(r"tăng|lên ", ctx): cls = "pos"
+        return f'<b class="{cls}">{x}</b>' if cls else f"<b>{x}</b>"
+    parts = _re.split(r"(<[^>]+>)", shorten(t))
+    out = ""
+    for p in parts:
+        if p.startswith("<"): out += p; continue
+        pos = 0
+        for m in _NUM.finditer(p):
+            out += p[pos:m.start()] + sub(m, p[:m.start()]); pos = m.end()
+        out += p[pos:]
+    return out
+
+def imp(i):
+    return f'<span class="imp">→ {esc(i["impact"])}</span>' if i.get("impact") else ""
 
 def news(items):
-    m = {"+": ("tg", "Tích cực"), "-": ("tr", "Tiêu cực"), "o": ("tn", "Theo dõi")}
-    return "".join(f'<p><span class="tag {m[i["s"]][0]}">{m[i["s"]][1]}</span>{boldnum(rich(i["text"]))} {chips(i.get("chips", []))}</p>' for i in items)
+    m = {"+": ("tg", "Tích cực"), "-": ("tr", "Tiêu cực"), "o": ("tn", "Theo dõi"), "~": ("tk", "Hai chiều")}
+    return "".join(f'<p><span class="tag {m[i["s"]][0]}">{m[i["s"]][1]}</span>{boldnum(rich(i["text"]))} {chips(i.get("chips", []))}{imp(i)}</p>' for i in items)
 
 def hero(d):
     h = d.get("hero")
@@ -159,18 +190,18 @@ def shell(d, body, k):
     return f"""<!doctype html><html lang="vi"><head><meta charset="utf-8"><style>{CSS}</style>
 <style>{CSS_M}</style><style>.page .list p{{font-size:calc(21px*var(--k))}} .ev{{font-size:calc(18.5px*var(--k))}} .ev td{{padding:calc(10px*var(--k)) 6px}}</style></head>
 <body><div class="page" style="--k:{k}">
-<div class="top"><img src="data:image/png;base64,{LOGO}" alt="Weha"><div class="ed"><b class="bs">BẢN TIN SÁNG</b>{esc(d["date_label"])} · 08:00</div></div>
+<div class="top"><img src="data:image/png;base64,{LOGO}" alt="Weha"><div class="ed"><b class="bs">BẢN TIN SÁNG</b>{esc(d["date_label"])}</div></div>
 {body}
 <div class="spacer"></div>
 <div class="foot"><div class="who"><b>Nguyễn Hoài</b><br>Weha · 0396 336 096</div>
-<div class="disc">Số liệu mang tính tham khảo, không phải khuyến nghị mua/bán. Nhà đầu tư tự chịu trách nhiệm với quyết định của mình.</div></div>
+<div class="disc">Số liệu mang tính tham khảo, không phải khuyến nghị mua/bán.<br>Nhà đầu tư tự chịu trách nhiệm với quyết định của mình.</div></div>
 </div></body></html>"""
 
 def page1(d):
     return f"""<span class="pill">Bản tin sáng</span>
 <p class="brand">Trước giờ mở cửa · {esc(d["date_short"])} · Trang 1/2 — Vĩ mô</p>
-<h1>{rich(d["headline"])}</h1>
-<p class="lede">{rich(d["lede"])}</p>
+<h1>{boldnum(rich(d["headline"]), False).replace("VN-Index","VN‑Index")}</h1>
+<p class="lede">{boldnum(rich(d["lede"]), False)}</p>
 <div class="strip mini">{"".join(tile(t) for t in d["strip"])}</div>
 {hero(d)}
 <h2><span class="no">01</span> Quốc tế</h2>

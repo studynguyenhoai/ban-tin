@@ -20,12 +20,14 @@
   {
    "label": "Khối ngoại 13/11",
    "value": "+16 tỷ",
-   "note": "Mua POW, VJC; bán FPT"
+   "note": "Mua POW, VJC; bán FPT",
+   "tone": "up"
   },
   {
    "label": "Tự doanh 13/11",
    "value": "+116 tỷ",
-   "note": "Mua GMD, VJC, REE"
+   "note": "Mua GMD, VJC, REE",
+   "tone": "up"
   }
  ],
  "intl_sub": "Đóng cửa phiên 13/11 · % so với phiên trước",
@@ -50,7 +52,7 @@
   },
   {
    "label": "Dầu Brent",
-   "value": "94,42",
+   "value": "94",
    "note": "−0,10%",
    "tone": "down"
   },
@@ -64,15 +66,17 @@
  "intl_news": [
   {
    "s": "-",
-   "text": "<b>Mỹ</b>: lạm phát giá sản xuất (PPI) cao nhất gần 4 năm, tạo thêm sức ép để <b>Fed</b> tăng lãi suất trong tháng 12."
+   "text": "<b>Mỹ</b>: lạm phát giá sản xuất (PPI) cao nhất gần 4 năm, tạo thêm sức ép để <b>Fed</b> tăng lãi suất trong tháng 12.",
+   "impact": "Áp lực lên tỷ giá và dòng vốn ở thị trường mới nổi"
   },
   {
    "s": "-",
    "text": "<b>Nasdaq</b> giảm khi cổ phiếu <b>Nvidia</b> tiếp tục bị bán; Dow Jones +0,10% lên 52.347,55."
   },
   {
-   "s": "o",
-   "text": "<b>Dầu</b>: giá hoàn tất tuần giảm do tín hiệu dư cung; Brent đóng cửa 94,42 USD."
+   "s": "~",
+   "text": "<b>Dầu</b>: giá hoàn tất tuần giảm do tín hiệu dư cung; Brent đóng cửa 94 USD.",
+   "impact": "Giảm chi phí nhiên liệu cho hàng không, vận tải; bất lợi nhóm dầu khí"
   },
   {
    "s": "o",
@@ -88,17 +92,20 @@
   {
    "label": "GDP quý 3",
    "value": "9,95%",
-   "note": "Quý 2: 8,81%"
+   "note": "Quý 2: 8,81%",
+   "tone": "up"
   },
   {
    "label": "CPI tháng 10",
    "value": "5,09%",
-   "note": "Lõi 4,04%; T9: 5,08%"
+   "note": "Lõi 4,04%; T9: 5,08%",
+   "tone": "up"
   },
   {
    "label": "Tỷ giá trung tâm",
    "value": "25.637",
-   "note": "+14 đồng"
+   "note": "+14 đồng",
+   "tone": "up"
   },
   {
    "label": "OMO ròng (tỷ)",
@@ -109,7 +116,8 @@
  "dom_news": [
   {
    "s": "+",
-   "text": "<b>Xuất khẩu</b> tháng 10 đạt 64,7 tỷ USD, nhập khẩu 57,4 tỷ USD, <b>xuất siêu 7,3 tỷ USD</b>."
+   "text": "<b>Xuất khẩu</b> tháng 10 đạt 64,7 tỷ USD, nhập khẩu 57,4 tỷ USD, <b>xuất siêu 7,3 tỷ USD</b>.",
+   "impact": "Có lợi nhóm xuất khẩu, cảng biển, logistics"
   },
   {
    "s": "o",
@@ -151,7 +159,8 @@
   },
   {
    "s": "-",
-   "text": "<b>VDP</b> (Vidipha): sáu lãnh đạo đồng loạt từ nhiệm sau biến động lớn về cổ đông."
+   "text": "<b>VDP</b> (Vidipha): sáu lãnh đạo đồng loạt từ nhiệm sau biến động lớn về cổ đông.",
+   "impact": "Rủi ro quản trị tại VDP"
   },
   {
    "s": "o",

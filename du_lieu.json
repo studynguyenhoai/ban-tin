@@ -1,0 +1,331 @@
+{
+ "file_date": "16-11-2026",
+ "date_label": "Thứ Hai, 16/11/2026",
+ "date_short": "Thứ Hai 16/11/2026",
+ "headline": "PPI Mỹ cao nhất gần <mark>4 năm</mark>, Nasdaq giảm 0,91%; VN-Index đi ngang ở 1.734,93 điểm",
+ "lede": "Khối ngoại mua ròng nhẹ 16 tỷ, tự doanh mua ròng 116 tỷ; NHNN hút ròng hơn 18.000 tỷ qua OMO.",
+ "strip": [
+  {
+   "label": "VN-Index 13/11",
+   "value": "1.734,93",
+   "note": "+0,01%",
+   "tone": "up"
+  },
+  {
+   "label": "VN30 13/11",
+   "value": "1.844,91",
+   "note": "+0,30%",
+   "tone": "up"
+  },
+  {
+   "label": "Khối ngoại 13/11",
+   "value": "+16 tỷ",
+   "note": "Mua POW, VJC; bán FPT",
+   "tone": "up"
+  },
+  {
+   "label": "Tự doanh 13/11",
+   "value": "+116 tỷ",
+   "note": "Mua GMD, VJC, REE",
+   "tone": "up"
+  }
+ ],
+ "intl_sub": "Đóng cửa phiên 13/11 · % so với phiên trước",
+ "intl_tiles": [
+  {
+   "label": "S&P 500",
+   "value": "7.561,67",
+   "note": "−0,40%",
+   "tone": "down"
+  },
+  {
+   "label": "Nasdaq",
+   "value": "25.136,27",
+   "note": "−0,91%",
+   "tone": "down"
+  },
+  {
+   "label": "Vàng (USD/oz)",
+   "value": "3.886,3",
+   "note": "+0,03%",
+   "tone": "up"
+  },
+  {
+   "label": "Dầu Brent",
+   "value": "94",
+   "note": "−0,10%",
+   "tone": "down"
+  },
+  {
+   "label": "UST 10 năm",
+   "value": "5,15%",
+   "note": "+5 bps",
+   "tone": "up"
+  }
+ ],
+ "intl_news": [
+  {
+   "s": "-",
+   "text": "<b>Mỹ</b>: lạm phát giá sản xuất (PPI) cao nhất gần 4 năm, tạo thêm sức ép để <b>Fed</b> tăng lãi suất trong tháng 12.",
+   "impact": "Áp lực lên tỷ giá và dòng vốn ở thị trường mới nổi"
+  },
+  {
+   "s": "-",
+   "text": "<b>Nasdaq</b> giảm khi cổ phiếu <b>Nvidia</b> tiếp tục bị bán; Dow Jones +0,10% lên 52.347,55."
+  },
+  {
+   "s": "~",
+   "text": "<b>Dầu</b>: giá hoàn tất tuần giảm do tín hiệu dư cung; Brent đóng cửa 94 USD.",
+   "impact": "Giảm chi phí nhiên liệu cho hàng không, vận tải; bất lợi nhóm dầu khí"
+  },
+  {
+   "s": "o",
+   "text": "<b>Mỹ</b> hoãn, hủy hàng nghìn chuyến bay do sự cố hệ thống liên lạc (FAA)."
+  }
+ ],
+ "dom_tiles": [
+  {
+   "label": "Xuất khẩu T10, USD",
+   "value": "64,7 tỷ",
+   "note": "Xuất siêu 7,3 tỷ"
+  },
+  {
+   "label": "GDP quý 3",
+   "value": "9,95%",
+   "note": "Quý 2: 8,81%",
+   "tone": "up"
+  },
+  {
+   "label": "CPI tháng 10",
+   "value": "5,09%",
+   "note": "Lõi 4,04%; T9: 5,08%",
+   "tone": "up"
+  },
+  {
+   "label": "Tỷ giá trung tâm",
+   "value": "25.637",
+   "note": "+14 đồng",
+   "tone": "up"
+  },
+  {
+   "label": "OMO ròng (tỷ)",
+   "value": "−18.154",
+   "note": "NHNN hút ròng 13/11"
+  }
+ ],
+ "dom_news": [
+  {
+   "s": "+",
+   "text": "<b>Xuất khẩu</b> tháng 10 đạt 64,7 tỷ USD, nhập khẩu 57,4 tỷ USD, <b>xuất siêu 7,3 tỷ USD</b>.",
+   "impact": "Có lợi nhóm xuất khẩu, cảng biển, logistics"
+  },
+  {
+   "s": "o",
+   "text": "<b>CPI</b> tháng 10 tăng 5,09% so cùng kỳ, lạm phát cơ bản 4,04% (tháng 9: 4,45%)."
+  },
+  {
+   "s": "+",
+   "text": "<b>Vietcombank</b> giảm lãi vay đến 3%/năm, gần 25.000 khách hàng được hưởng lợi; lãi suất ngân hàng hạ nhiệt."
+  },
+  {
+   "s": "o",
+   "text": "<b>NHNN</b> hút ròng 18.154 tỷ đồng qua thị trường mở phiên 13/11."
+  },
+  {
+   "s": "o",
+   "text": "<b>Thủ tướng</b> đề xuất lập danh mục dự án hạ tầng ưu tiên của ASEAN đến năm 2040."
+  }
+ ],
+ "company_news": [
+  {
+   "s": "+",
+   "text": "<b>HPG</b> lập công ty năng lượng tái tạo vốn gần 650 tỷ đồng.",
+   "chips": [
+    [
+     "HPG",
+     "0,0%"
+    ]
+   ]
+  },
+  {
+   "s": "+",
+   "text": "<b>NKG</b>: con gái Chủ tịch Hồ Minh Quang đăng ký mua 5 triệu cổ phiếu.",
+   "chips": [
+    [
+     "NKG",
+     "−2,0%"
+    ]
+   ]
+  },
+  {
+   "s": "-",
+   "text": "<b>VDP</b> (Vidipha): sáu lãnh đạo đồng loạt từ nhiệm sau biến động lớn về cổ đông.",
+   "impact": "Rủi ro quản trị tại VDP"
+  },
+  {
+   "s": "o",
+   "text": "<b>DMX</b> (Điện Máy Xanh) phát hành lô trái phiếu 100 tỷ đồng.",
+   "chips": [
+    [
+     "DMX",
+     "−1,2%"
+    ]
+   ]
+  },
+  {
+   "s": "o",
+   "text": "<b>Chứng khoán Beta</b> chào bán 40 triệu cổ phiếu để tăng vốn gấp đôi."
+  },
+  {
+   "s": "o",
+   "text": "<b>Viettel</b> nắm 4,7 tỷ cổ phiếu trị giá 262.600 tỷ.",
+   "chips": [
+    [
+     "MBB",
+     "−0,3%"
+    ],
+    [
+     "VGI",
+     "+1,0%"
+    ],
+    [
+     "VTP",
+     "+0,1%"
+    ]
+   ]
+  },
+  {
+   "s": "o",
+   "text": "<b>SCIC</b> rao bán vốn góp tại một trường đại học có cổ đông IDICO, Habeco."
+  }
+ ],
+ "dividends": [
+  [
+   "16/11",
+   "NT2",
+   "Chi trả cổ tức tiền 10%"
+  ],
+  [
+   "20/11",
+   "GAS · NTC",
+   "Chi trả tiền 25% · 60%"
+  ],
+  [
+   "20/11",
+   "TNG · VNL",
+   "Chi trả tiền 5% · 7%"
+  ],
+  [
+   "20/11",
+   "G36",
+   "Chi trả tiền 4,18%"
+  ]
+ ],
+ "events": [
+  [
+   "16/11",
+   "SGN · GIL",
+   "Họp ĐHCĐ bất thường"
+  ],
+  [
+   "17/11",
+   "TIN",
+   "Thông báo ĐHCĐ bất thường (dự kiến T12)"
+  ]
+ ],
+ "flows": {
+  "date": "13/11",
+  "foreign": {
+   "buy": [
+    [
+     "POW",
+     86.4
+    ],
+    [
+     "VJC",
+     57.8
+    ],
+    [
+     "HDB",
+     57.6
+    ],
+    [
+     "MSN",
+     56.1
+    ],
+    [
+     "TCB",
+     53.0
+    ]
+   ],
+   "sell": [
+    [
+     "FPT",
+     -221.2
+    ],
+    [
+     "GMD",
+     -56.4
+    ],
+    [
+     "BID",
+     -37.4
+    ],
+    [
+     "SHB",
+     -33.3
+    ],
+    [
+     "NVL",
+     -31.6
+    ]
+   ]
+  },
+  "prop": {
+   "buy": [
+    [
+     "GMD",
+     200.9
+    ],
+    [
+     "VJC",
+     105.1
+    ],
+    [
+     "REE",
+     78.5
+    ],
+    [
+     "CTD",
+     43.8
+    ],
+    [
+     "NLG",
+     42.8
+    ]
+   ],
+   "sell": [
+    [
+     "VIX",
+     -269.8
+    ],
+    [
+     "ACB",
+     -147.9
+    ],
+    [
+     "DVN",
+     -24.4
+    ],
+    [
+     "MWG",
+     -16.6
+    ],
+    [
+     "VNM",
+     -15.5
+    ]
+   ]
+  }
+ }
+}
