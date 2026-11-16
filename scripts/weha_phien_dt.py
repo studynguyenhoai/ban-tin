@@ -274,10 +274,11 @@ def liq_chart(rows, H=310):
         bars_ += (f'<rect x="{x:.1f}" y="{Y(a):.1f}" width="{bw:.1f}" height="{Y(0)-Y(a):.1f}" fill="{NAVY}"/>'
                   f'<rect x="{x:.1f}" y="{Y(a+b):.1f}" width="{bw:.1f}" height="{Y(a)-Y(a+b):.1f}" fill="{GOLD}"/>'
                   f'<text x="{x+bw/2:.1f}" y="{Y(a+b)-8:.1f}" font-size="17" font-weight="700" text-anchor="middle" fill="#141413" stroke="#fff" stroke-width="5" paint-order="stroke">{vn(a+b)}</text>'
+                  f'<text x="{x+bw/2:.1f}" y="{Y(a)+20:.1f}" font-size="15" font-weight="700" text-anchor="middle" fill="#fff">{vn(a)}</text>'
                   f'<text x="{x+bw/2:.1f}" y="{H-10}" font-size="17" text-anchor="middle" fill="#6F6E68">{esc(dt)}</text>')
     ay = Y(avg)
     ref = f'<line x1="{L}" x2="{W-R}" y1="{ay:.1f}" y2="{ay:.1f}" stroke="#141413" stroke-dasharray="6 5" stroke-width="1.5"/>'
-    return svg_wrap(W, H, g + bars_ + ref)
+    return svg_wrap(W, H, g + ref + bars_)
 
 def flow5_chart(title, rows):
     """rows: [[dd/mm, ròng tỷ đồng]] — cột xanh mua ròng / đỏ bán ròng."""
