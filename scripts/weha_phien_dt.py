@@ -206,16 +206,20 @@ def page_cuoi(d):
         fl += flow_pair("Khối ngoại", d["foreign_net"], d.get("foreign_note", ""), d["foreign_top"])
     if d.get("prop_top"):
         fl += flow_pair("Tự doanh", d["prop_net"], d.get("prop_note", ""), d["prop_top"])
-    flows = f'<div class="grid g2">{fl}</div>' if fl else ""
+    h = d.get("hist10") or []
+    hist_sec = ""
+    if len(h) >= 2:
+        chg = h[-1][1] - h[0][1]
+        hist_sec = (f'<h2><span class="no">02</span> VN-Index {len(h)} phiên gần nhất</h2><p class="cap">Từ {esc(h[0][0])} đến {esc(h[-1][0])}: '
+                    f'<b class="{"pos" if chg >= 0 else "neg"}">{vn(chg, 2, True)} điểm ({vn(chg / h[0][1] * 100, 2, True)}%)</b></p>{hist_chart(h)}')
     return f"""<h1>{boldnum(rich(nb(d["headline"])), False).replace("VN-Index", "VN‑Index")}</h1>
 <p class="lede">{boldnum(rich(d["lede"]), False)}</p>
 <div class="tile4 mini" style="margin-top:8px">{"".join(tile(t) for t in tiles)}</div>
 <h2><span class="no">01</span> Đóng góp điểm và hiệu suất ngành</h2>
 {side_cards(up, dn, "Kéo lên (điểm)", "Kéo xuống (điểm)") if up or dn else ""}<div style="margin-top:10px">{sector_card(d, 4)}</div>
-<h2><span class="no">02</span> Dòng tiền</h2>{flows}
-<h2><span class="no">03</span> Động lực và tín hiệu</h2>
+{hist_sec}<h2><span class="no">{"03" if hist_sec else "02"}</span> Động lực và tín hiệu</h2>
 <div class="card list">{movers}</div><div style="margin-top:10px">{mac(d)}</div>
-<h2><span class="no">04</span> Kịch bản phiên tới</h2>
+<h2><span class="no">{"04" if hist_sec else "03"}</span> Kịch bản phiên tới</h2>
 <div class="card list">{news([dict(i, text=nb(i["text"])) for i in d.get("scenarios", [])[:3]])}</div>"""
 
 
@@ -254,7 +258,7 @@ def hist_chart(pts):
 def liq_chart(rows):
     """rows: [[dd/mm, khớp lệnh, thỏa thuận]] tỷ đồng — cột chồng + đường trung bình."""
     if not rows: return ""
-    W, H, L, R, T, B = 972, 235, 66, 14, 32, 34
+    W, H, L, R, T, B = 972, 310, 66, 14, 32, 34
     tot = [a + b for _, a, b in rows]; mx = max(tot) * 1.12
     avg = sum(tot) / len(tot)
     Y = lambda v: T + (H - T - B) * (1 - v / mx)
@@ -311,37 +315,150 @@ def notable_table(title, rows, up):
     return (f'<div class="card nt"><div class="nh" style="background:{col}">{title}</div><table>'
             f'<tr><th>Mã</th><th>Giá</th><th>% giá</th><th>GT khớp</th><th>KL/TB20</th><th>Tín hiệu</th></tr>{body}</table></div>')
 
+
+def intraday_liq(L3):
+    """L3: {"today": [[hh:mm, lũy kế tỷ]], "yesterday": [...], "avg10": [...]} — 3 đường lũy kế khớp lệnh theo giờ."""
+    series = [("Hôm nay", L3.get("today") or [], NAVY, 4, ""), ("Hôm qua", L3.get("yesterday") or [], GOLD, 3, ""), ("TB 10 phiên", L3.get("avg10") or [], "#8A8878", 3, "7 5")]
+    grid = next((x[1] for x in (series[1], series[2], series[0]) if len(x[1]) > 1), [])
+    if not grid: return ""
+    labels = [t for t, _ in grid]
+    pos = {t: i for i, t in enumerate(labels)}
+    W, H, L, R, T, B = 972, 340, 74, 20, 26, 34
+    mx = max(v for _, sr, *_ in series for _, v in sr) * 1.1 if any(sr for _, sr, *_ in series) else 1
+    X = lambda i: L + (W - L - R) * i / (len(labels) - 1)
+    Y = lambda v: T + (H - T - B) * (1 - v / mx)
+    g = ""
+    for k in range(4):
+        v = mx * k / 3
+        g += (f'<line x1="{L}" x2="{W-R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}" stroke="#E6E3D8"/>'
+              f'<text x="{L-8}" y="{Y(v)+6:.1f}" font-size="17" text-anchor="end" fill="#6F6E68">{vn(v)}</text>')
+    step = max(1, len(labels) // 6)
+    g += "".join(f'<text x="{X(i):.1f}" y="{H-9}" font-size="17" text-anchor="{"end" if i == len(labels)-1 else ("start" if i == 0 else "middle")}" fill="#6F6E68">{esc(labels[i])}</text>' for i in range(0, len(labels), step))
+    lines = ""
+    for name, sr, col, w, dash in series:
+        pts = [(pos[t], v) for t, v in sr if t in pos]
+        if len(pts) < 2: continue
+        path = " ".join(("M" if j == 0 else "L") + f"{X(i):.1f},{Y(v):.1f}" for j, (i, v) in enumerate(pts))
+        da = f' stroke-dasharray="{dash}"' if dash else ""
+        lines += f'<path d="{path}" fill="none" stroke="{col}" stroke-width="{w}" stroke-linejoin="round"{da}/>'
+    lt = series[0][1]
+    if lt and lt[-1][0] in pos:
+        i, v = pos[lt[-1][0]], lt[-1][1]
+        lines += f'<circle cx="{X(i):.1f}" cy="{Y(v):.1f}" r="6" fill="{NAVY}"/>'
+    return svg_wrap(W, H, g + lines)
+
+def liq_caption(L3, unit="tỷ"):
+    t, y, a = L3.get("today") or [], L3.get("yesterday") or [], L3.get("avg10") or []
+    if not t: return ""
+    lab, v = t[-1]
+    at = lambda sr: next((x for tt, x in sr if tt == lab), None)
+    parts = [f'Lũy kế đến {esc(lab)}: <b>{vn(v)}</b> {unit}']
+    for nm, sr in (("hôm qua", y), ("TB 10 phiên", a)):
+        o = at(sr)
+        if o: parts.append(f'<b class="{"pos" if v >= o else "neg"}">{vn((v-o)/o*100, 1, True)}%</b> so với {nm} cùng giờ')
+    return '<p class="cap">' + ", ".join(parts[:1]) + (", " + ", ".join(parts[1:]) if len(parts) > 1 else "") + ".</p>"
+
+LEG = lambda items: '<span class="lg">' + "".join(f'<i style="background:{c}"></i>{n}' for n, c in items) + '</span>'
+
+def flow_col(no, title, rows, top, stacked):
+    """Cột kiểu Market Lens: tiêu đề, biểu đồ 5 phiên, 2 bảng top 5 mua/bán ròng."""
+    W, H, L, R, T, B = 470, 270, 10, 10, 28, 30
+    if rows:
+        vals = [sum(r[1:]) for r in rows]
+        mx = max(abs(v) for v in vals) * 1.25 or 1
+        zero = T + (H - T - B) / 2; half = (H - T - B) / 2
+        n = len(rows); st = (W - L - R) / n; bw = st * .56
+        o = f'<line x1="{L}" x2="{W-R}" y1="{zero}" y2="{zero}" stroke="#B8B6AC"/>'
+        for i, r in enumerate(rows):
+            x = L + st * i + (st - bw) / 2
+            comps = r[1:] if stacked else [r[1]]
+            cols = [NAVY, GOLD] if stacked else [GREEN if r[1] >= 0 else RED]
+            up_, dn_ = 0.0, 0.0
+            for c, col in zip(comps, cols):
+                h = abs(c) / mx * half
+                if c >= 0: y = zero - (up_ + h); up_ += h
+                else: y = zero + dn_; dn_ += h
+                o += f'<rect x="{x:.1f}" y="{y:.1f}" width="{bw:.1f}" height="{h:.1f}" fill="{col}"/>'
+            tot = sum(comps)
+            ty = zero - up_ - 7 if tot >= 0 else zero + dn_ + 19
+            o += (f'<text x="{x+bw/2:.1f}" y="{ty:.1f}" font-size="16" font-weight="700" text-anchor="middle" fill="#141413" stroke="#fff" stroke-width="4" paint-order="stroke">{vn(tot, 0, True)}</text>'
+                  f'<text x="{x+bw/2:.1f}" y="{H-8}" font-size="15" text-anchor="middle" fill="#6F6E68">{esc(r[0])}</text>')
+        total = sum(vals)
+        sub = f'<div class="fs">Ròng 5 phiên: <b class="{"pos" if total >= 0 else "neg"}">{vn(total, 0, True)} tỷ</b> {LEG([("Khớp lệnh", NAVY), ("Thỏa thuận", GOLD)]) if stacked else ""}</div>'
+        chart = f'{sub}<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" font-family="Inter,sans-serif">{o}</svg>'
+    else:
+        chart = '<div class="fs">Chưa có số liệu</div>'
+    def tb(t, rows_, col):
+        body = "".join(f'<tr><td class="sy">{esc(m)}</td><td class="{"pos" if v >= 0 else "neg"}">{vn(v, 1, True)}</td></tr>' for m, v in rows_[:5])
+        return f'<div class="tb"><div class="th" style="background:{col}">{t}<small>GT ròng, tỷ đồng</small></div><table>{body}</table></div>'
+    tops = ""
+    if top and (top.get("buy") or top.get("sell")):
+        tops = f'<div class="two">{tb("Top 5 mua ròng", top.get("buy", []), GREEN)}{tb("Top 5 bán ròng", top.get("sell", []), RED)}</div>'
+    return f'<div class="fcol"><div class="fh"><span class="no2">{no:02d}</span>{title}</div><div class="fb">{chart}{tops}</div></div>'
+
 def page_cuoi2(d):
-    parts = []; n = 0
-    def sec(title, html):
-        nonlocal n
-        n += 1; parts.append(f'<h2><span class="no">{n:02d}</span> {title}</h2>{html}')
-    h = d.get("hist10") or []
-    if len(h) >= 2:
-        chg = h[-1][1] - h[0][1]; pct = chg / h[0][1] * 100
-        sec(f"VN-Index {len(h)} phiên gần nhất", f'<p class="cap">Từ {esc(h[0][0])} đến {esc(h[-1][0])}: <b class="{"pos" if chg >= 0 else "neg"}">{vn(chg, 2, True)} điểm ({vn(pct, 2, True)}%)</b></p>' + hist_chart(h))
+    parts = []
+    L3 = d.get("liq_intraday") or {}
+    if L3.get("today"):
+        parts.append(f'<h2><span class="no">01</span> Thanh khoản khớp lệnh trong phiên (tỷ đồng, lũy kế)</h2>{liq_caption(L3)}<p class="cap">{LEG([("Hôm nay", NAVY), ("Hôm qua", GOLD), ("TB 10 phiên", "#8A8878")])}</p>{intraday_liq(L3)}')
     lq = d.get("liq10") or []
     if lq:
         tot = [a + b for _, a, b in lq]; avg = sum(tot) / len(tot); last = tot[-1]
-        sec(f"Thanh khoản {len(lq)} phiên (tỷ đồng)",
-            f'<p class="cap">Phiên cuối <b>{vn(last)}</b> tỷ, <b class="{"pos" if last >= avg else "neg"}">{vn((last-avg)/avg*100, 1, True)}%</b> so với trung bình {len(lq)} phiên ({vn(avg)} tỷ). <span class="lg"><i style="background:{NAVY}"></i>Khớp lệnh <i style="background:{GOLD}"></i>Thỏa thuận</span></p>' + liq_chart(lq))
+        parts.append(f'<h2><span class="no">02</span> Thanh khoản {len(lq)} phiên (tỷ đồng)</h2>'
+            f'<p class="cap">Phiên cuối <b>{vn(last)}</b> tỷ, <b class="{"pos" if last >= avg else "neg"}">{vn((last-avg)/avg*100, 1, True)}%</b> so với trung bình {len(lq)} phiên ({vn(avg)} tỷ). {LEG([("Khớp lệnh", NAVY), ("Thỏa thuận", GOLD)])}</p>' + liq_chart(lq))
     f5, p5 = d.get("foreign5") or [], d.get("prop5") or []
-    if f5 or p5:
-        sec("Dòng tiền 5 phiên (tỷ đồng, ròng)", f'<div class="grid g2">{flow5_chart("Khối ngoại", f5)}{flow5_chart("Tự doanh", p5)}</div>')
+    if f5 or p5 or d.get("foreign_top5") or d.get("prop_top5"):
+        stacked = bool(f5) and len(f5[0]) >= 3
+        parts.append(f'<div class="grid g2" style="margin-top:14px">{flow_col(3, "KHỐI NGOẠI | HOSE", f5, d.get("foreign_top5"), stacked)}{flow_col(4, "TỰ DOANH | HOSE", p5, d.get("prop_top5"), False)}</div>')
+    return "".join(parts)
+
+def sector_flow_card(rows):
+    """rows: [[ngành, GT khớp tỷ, % so TB20, % giá]] — sắp theo GT giảm dần."""
+    rows = sorted(rows, key=lambda r: -r[1])[:12]
+    mx = max(r[1] for r in rows) or 1
+    body = ""
+    for nm, gt, vs, pc in rows:
+        body += (f'<div class="sf"><span class="nm">{esc(nm)}</span><span class="bw"><i style="width:{gt/mx*100:.1f}%;background:{GREEN if pc >= 0 else RED}"></i></span>'
+                 f'<span class="v">{vn(gt)}</span><span class="v {"pos" if vs >= 0 else "neg"}">{vn(vs, 0, True)}%</span><span class="v {"pos" if pc >= 0 else "neg"}">{vn(pc, 2, True)}%</span></div>')
+    head = '<div class="sf hd"><span class="nm">Ngành</span><span class="bw"></span><span class="v">GT khớp (tỷ)</span><span class="v">So TB20</span><span class="v">% giá</span></div>'
+    return f'<div class="card">{head}{body}</div>'
+
+def page_cuoi3(d):
+    parts = []; n = 0
+    sf = d.get("sector_flow") or []
+    if sf:
+        n += 1
+        parts.append(f'<h2><span class="no">{n:02d}</span> Dòng tiền theo ngành</h2><p class="cap">Giá trị khớp lệnh từng ngành hôm nay. Thanh xanh là ngành tăng giá, thanh đỏ là ngành giảm giá.</p>{sector_flow_card(sf)}')
     nt = d.get("notable") or {}
     if nt.get("up") or nt.get("down"):
-        sec("Cổ phiếu đáng chú ý (GT khớp: tỷ đồng)", f'{notable_table("5 mã tăng nổi bật", nt.get("up", [])[:5], True)}<div style="height:10px"></div>{notable_table("5 mã giảm nổi bật", nt.get("down", [])[:5], False)}')
+        n += 1
+        parts.append(f'<h2><span class="no">{n:02d}</span> Cổ phiếu đáng chú ý (GT khớp: tỷ đồng)</h2>'
+            f'{notable_table("5 mã tăng nổi bật", nt.get("up", [])[:5], True)}<div style="height:10px"></div>{notable_table("5 mã giảm nổi bật", nt.get("down", [])[:5], False)}')
     return "".join(parts)
 
 CSS_P2 = """
+.fcol{border-radius:12px;overflow:hidden;background:#fff;border:1px solid #E6E3D8}
+.fh{background:#1B2B5B;color:#fff;font-weight:800;font-size:20px;padding:9px 12px;letter-spacing:.2px}
+.no2{display:inline-block;background:#fff;color:#1B2B5B;border-radius:6px;padding:0 8px;margin-right:9px;font-size:18px}
+.fb{padding:6px 8px 10px} .fb svg{width:100%;height:auto;display:block}
+.fs{font-size:17px;color:#3b3a36;padding:2px 4px} .fs .lg{float:none;display:block;font-size:15px;margin-top:2px} .fs .lg i{margin-left:8px;margin-right:5px} .fs .lg i:first-child{margin-left:0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+.tb{border:1px solid #ECE9DF;border-radius:8px;overflow:hidden}
+.tb .th{color:#fff;font-weight:700;font-size:16px;text-align:center;padding:5px 2px;line-height:1.15} .tb .th small{display:block;font-weight:500;font-size:13px;opacity:.9}
+.tb table{width:100%;border-collapse:collapse;font-size:18px} .tb td{padding:5px 8px;border-top:1px solid #ECE9DF;text-align:right;font-variant-numeric:tabular-nums}
+.tb td.sy{text-align:left;font-weight:700} .tb .pos{color:#2F7D4F;font-weight:700} .tb .neg{color:#B8432F;font-weight:700}
+.sf{display:grid;grid-template-columns:150px 1fr 120px 92px 92px;gap:8px;align-items:center;font-size:22px;padding:12px 0;border-top:1px solid #ECE9DF}
+.sf.hd{font-size:15px;color:#6F6E68;font-weight:600;border-top:none} .sf .v{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+.sf .bw{background:#F1EFE7;height:20px;border-radius:3px;overflow:hidden} .sf .bw i{display:block;height:100%} .sf .nm{font-weight:600}
+.sf .pos{color:#2F7D4F} .sf .neg{color:#B8432F}
 .cap{font-size:20px;margin:2px 0 8px;color:#3b3a36} .cap b{font-weight:700}
 .lg{float:right;font-size:17px} .lg i{display:inline-block;width:13px;height:13px;margin:0 5px 0 12px;vertical-align:-1px}
 .h5{font-size:21px;font-weight:700;padding:2px 4px 4px} .h5 span{font-weight:700;font-size:19px}
 .card.fl svg{width:100%;height:auto;display:block}
-.nt{padding:0;overflow:hidden;flex-shrink:0} .nt .nh{color:#fff;font-weight:700;font-size:21px;padding:7px 14px}
-.nt table{width:100%;border-collapse:collapse;font-size:19px} .nt th{font-size:16px;color:#6F6E68;font-weight:600;text-align:right;padding:5px 8px;background:#F4F2EA}
-.nt td{text-align:right;padding:5px 8px;border-top:1px solid #ECE9DF;font-variant-numeric:tabular-nums} .nt th:first-child,.nt td.sy{text-align:left;font-weight:700}
-.nt td.sg{font-size:16px;text-align:right;color:#3b3a36} .nt .pos{color:#2F7D4F;font-weight:700} .nt .neg{color:#B8432F;font-weight:700}
+.nt{padding:0;overflow:hidden;flex-shrink:0} .nt .nh{color:#fff;font-weight:700;font-size:23px;padding:10px 14px}
+.nt table{width:100%;border-collapse:collapse;font-size:22px} .nt th{font-size:16px;color:#6F6E68;font-weight:600;text-align:right;padding:5px 8px;background:#F4F2EA}
+.nt td{text-align:right;padding:11px 8px;border-top:1px solid #ECE9DF;font-variant-numeric:tabular-nums} .nt th:first-child,.nt td.sy{text-align:left;font-weight:700}
+.nt td.sg{font-size:17px;text-align:right;color:#3b3a36} .nt .pos{color:#2F7D4F;font-weight:700} .nt .neg{color:#B8432F;font-weight:700}
 """
 
 def shell(d, body, k, title=None):
@@ -358,9 +475,9 @@ def shell(d, body, k, title=None):
 
 async def render(d, out, page=1):
     from playwright.async_api import async_playwright
-    fn = page_giua if d["mode"] == "giua" else (page_cuoi if page == 1 else page_cuoi2)
-    ttl = TITLE[d["mode"]] if page == 1 else "DIỄN BIẾN 10 PHIÊN"
-    base = os.path.join(out, f"Weha_{NAME[d['mode']]}{'' if page == 1 else '2'}_{d['file_date']}")
+    fn = page_giua if d["mode"] == "giua" else {1: page_cuoi, 2: page_cuoi2, 3: page_cuoi3}[page]
+    ttl = TITLE[d["mode"]] if page == 1 else {2: "THANH KHOẢN VÀ DÒNG TIỀN", 3: "NGÀNH VÀ CỔ PHIẾU CHÚ Ý"}[page]
+    base = os.path.join(out, f"Weha_{NAME[d['mode']]}{'' if page == 1 else page}_{d['file_date']}")
     async with async_playwright() as p:
         b = await p.chromium.launch()
         pg = await b.new_page(viewport={"width": 1080, "height": 1920}, device_scale_factor=2.3)
@@ -384,5 +501,8 @@ if __name__ == "__main__":
     out = sys.argv[2] if len(sys.argv) > 2 else "."
     os.makedirs(out, exist_ok=True)
     print(asyncio.run(render(d, out)))
-    if d["mode"] == "cuoi" and any(d.get(x) for x in ("hist10", "liq10", "foreign5", "prop5", "notable")):
-        print(asyncio.run(render(d, out, 2)))
+    if d["mode"] == "cuoi":
+        if any(d.get(x) for x in ("liq_intraday", "liq10", "foreign5", "prop5", "foreign_top5", "prop_top5")):
+            print(asyncio.run(render(d, out, 2)))
+        if any(d.get(x) for x in ("sector_flow", "notable")):
+            print(asyncio.run(render(d, out, 3)))
