@@ -218,27 +218,154 @@ def page_cuoi(d):
 <h2><span class="no">04</span> Kịch bản phiên tới</h2>
 <div class="card list">{news([dict(i, text=nb(i["text"])) for i in d.get("scenarios", [])[:3]])}</div>"""
 
-def shell(d, body, k):
+
+# ---------- Trang 2 bản cuối ngày: 10 phiên, dòng tiền 5 phiên, cổ phiếu đáng chú ý ----------
+GREEN, RED, NAVY, GOLD = "#2F7D4F", "#B8432F", "#1B2B5B", "#E0A526"
+
+def svg_wrap(W, H, inner):
+    return f'<div class="card chart"><svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" font-family="Inter,sans-serif">{inner}</svg></div>'
+
+def hist_chart(pts):
+    """pts: [[dd/mm, close]] — đường VN-Index nhiều phiên, ghi số từng điểm."""
+    if len(pts) < 2: return ""
+    W, H, L, R, T, B = 972, 250, 66, 30, 36, 34
+    ys = [p[1] for p in pts]; lo, hi = min(ys), max(ys); pad = (hi - lo) * .18 or 1; lo -= pad; hi += pad
+    X = lambda i: L + (W - L - R) * i / (len(pts) - 1)
+    Y = lambda v: T + (H - T - B) * (hi - v) / (hi - lo)
+    c = GREEN if pts[-1][1] >= pts[0][1] else RED
+    path = " ".join(("M" if i == 0 else "L") + f"{X(i):.1f},{Y(p[1]):.1f}" for i, p in enumerate(pts))
+    area = path + f" L{X(len(pts)-1):.1f},{H-B} L{X(0):.1f},{H-B} Z"
+    g = ""
+    for k in range(4):
+        v = lo + (hi - lo) * k / 3
+        g += (f'<line x1="{L}" x2="{W-R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}" stroke="#E6E3D8"/>'
+              f'<text x="{L-8}" y="{Y(v)+7:.1f}" font-size="18" text-anchor="end" fill="#6F6E68">{vn(v, 0)}</text>')
+    dots = ""
+    for i, (dt, v) in enumerate(pts):
+        col = GREEN if i == 0 or v >= pts[i-1][1] else RED
+        anchor = "start" if i == 0 else ("end" if i == len(pts) - 1 else "middle")
+        above = i in (0, len(pts) - 1) or v >= (pts[i-1][1] + pts[i+1][1]) / 2
+        ty = Y(v) - 12 if above else Y(v) + 26
+        dots += (f'<circle cx="{X(i):.1f}" cy="{Y(v):.1f}" r="5" fill="{col}"/>'
+                 f'<text x="{X(i):.1f}" y="{ty:.1f}" font-size="18" font-weight="700" text-anchor="{anchor}" fill="#141413" stroke="#fff" stroke-width="5" paint-order="stroke">{vn(v, 2)}</text>'
+                 f'<text x="{X(i):.1f}" y="{H-10}" font-size="17" text-anchor="{anchor}" fill="#6F6E68">{esc(dt)}</text>')
+    return svg_wrap(W, H, f'{g}<path d="{area}" fill="{c}" opacity=".10"/><path d="{path}" fill="none" stroke="{c}" stroke-width="3.5" stroke-linejoin="round"/>{dots}')
+
+def liq_chart(rows):
+    """rows: [[dd/mm, khớp lệnh, thỏa thuận]] tỷ đồng — cột chồng + đường trung bình."""
+    if not rows: return ""
+    W, H, L, R, T, B = 972, 235, 66, 14, 32, 34
+    tot = [a + b for _, a, b in rows]; mx = max(tot) * 1.12
+    avg = sum(tot) / len(tot)
+    Y = lambda v: T + (H - T - B) * (1 - v / mx)
+    n = len(rows); step = (W - L - R) / n; bw = step * .62
+    g = ""
+    for k in range(4):
+        v = mx * k / 3
+        g += (f'<line x1="{L}" x2="{W-R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}" stroke="#E6E3D8"/>'
+              f'<text x="{L-8}" y="{Y(v)+6:.1f}" font-size="17" text-anchor="end" fill="#6F6E68">{vn(v / 1000, 0)}k</text>')
+    bars_ = ""
+    for i, (dt, a, b) in enumerate(rows):
+        x = L + step * i + (step - bw) / 2
+        bars_ += (f'<rect x="{x:.1f}" y="{Y(a):.1f}" width="{bw:.1f}" height="{Y(0)-Y(a):.1f}" fill="{NAVY}"/>'
+                  f'<rect x="{x:.1f}" y="{Y(a+b):.1f}" width="{bw:.1f}" height="{Y(a)-Y(a+b):.1f}" fill="{GOLD}"/>'
+                  f'<text x="{x+bw/2:.1f}" y="{Y(a+b)-8:.1f}" font-size="17" font-weight="700" text-anchor="middle" fill="#141413" stroke="#fff" stroke-width="5" paint-order="stroke">{vn(a+b)}</text>'
+                  f'<text x="{x+bw/2:.1f}" y="{H-10}" font-size="17" text-anchor="middle" fill="#6F6E68">{esc(dt)}</text>')
+    ay = Y(avg)
+    ref = f'<line x1="{L}" x2="{W-R}" y1="{ay:.1f}" y2="{ay:.1f}" stroke="#141413" stroke-dasharray="6 5" stroke-width="1.5"/>'
+    return svg_wrap(W, H, g + bars_ + ref)
+
+def flow5_chart(title, rows):
+    """rows: [[dd/mm, ròng tỷ đồng]] — cột xanh mua ròng / đỏ bán ròng."""
+    if not rows: return ""
+    W, H, L, R, T, B = 470, 200, 12, 12, 30, 32
+    mx = max(abs(v) for _, v in rows) * 1.25 or 1
+    zero = T + (H - T - B) / 2; half = (H - T - B) / 2
+    n = len(rows); step = (W - L - R) / n; bw = step * .56
+    out = f'<line x1="{L}" x2="{W-R}" y1="{zero}" y2="{zero}" stroke="#B8B6AC"/>'
+    for i, (dt, v) in enumerate(rows):
+        x = L + step * i + (step - bw) / 2; h = abs(v) / mx * half
+        y = zero - h if v >= 0 else zero
+        col = GREEN if v >= 0 else RED
+        ty = y - 7 if v >= 0 else y + h + 19
+        out += (f'<rect x="{x:.1f}" y="{y:.1f}" width="{bw:.1f}" height="{h:.1f}" fill="{col}"/>'
+                f'<text x="{x+bw/2:.1f}" y="{ty:.1f}" font-size="17" font-weight="700" text-anchor="middle" fill="#141413">{vn(v, 0, True)}</text>'
+                f'<text x="{x+bw/2:.1f}" y="{H-9}" font-size="16" text-anchor="middle" fill="#6F6E68">{esc(dt)}</text>')
+    tot = sum(v for _, v in rows)
+    head = f'<div class="h5">{title} <span class="{"pos" if tot >= 0 else "neg"}">{vn(tot, 0, True)} tỷ / {len(rows)} phiên</span></div>'
+    return f'<div class="card fl">{head}<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" font-family="Inter,sans-serif">{out}</svg></div>'
+
+def sig(pct, klx, given=None):
+    if given: return given
+    kl = "KL cao" if klx >= 1.5 else ("KL thấp" if klx < 0.8 else "")
+    return ("Giá tăng" if pct > 0 else "Giá giảm") + (f", {kl}" if kl else "")
+
+def notable_table(title, rows, up):
+    col = GREEN if up else RED
+    body = ""
+    for r in rows:
+        sym, price, pct, gt, klx = r[:5]
+        tin = sig(pct, klx, r[5] if len(r) > 5 else None)
+        body += (f'<tr><td class="sy">{esc(sym)}</td><td>{vn(price, 2)}</td><td class="{"pos" if pct >= 0 else "neg"}">{vn(pct, 2, True)}%</td>'
+                 f'<td>{vn(gt, 0)}</td><td>{vn(klx, 2)}x</td><td class="sg">{esc(tin)}</td></tr>')
+    return (f'<div class="card nt"><div class="nh" style="background:{col}">{title}</div><table>'
+            f'<tr><th>Mã</th><th>Giá</th><th>% giá</th><th>GT khớp</th><th>KL/TB20</th><th>Tín hiệu</th></tr>{body}</table></div>')
+
+def page_cuoi2(d):
+    parts = []; n = 0
+    def sec(title, html):
+        nonlocal n
+        n += 1; parts.append(f'<h2><span class="no">{n:02d}</span> {title}</h2>{html}')
+    h = d.get("hist10") or []
+    if len(h) >= 2:
+        chg = h[-1][1] - h[0][1]; pct = chg / h[0][1] * 100
+        sec(f"VN-Index {len(h)} phiên gần nhất", f'<p class="cap">Từ {esc(h[0][0])} đến {esc(h[-1][0])}: <b class="{"pos" if chg >= 0 else "neg"}">{vn(chg, 2, True)} điểm ({vn(pct, 2, True)}%)</b></p>' + hist_chart(h))
+    lq = d.get("liq10") or []
+    if lq:
+        tot = [a + b for _, a, b in lq]; avg = sum(tot) / len(tot); last = tot[-1]
+        sec(f"Thanh khoản {len(lq)} phiên (tỷ đồng)",
+            f'<p class="cap">Phiên cuối <b>{vn(last)}</b> tỷ, <b class="{"pos" if last >= avg else "neg"}">{vn((last-avg)/avg*100, 1, True)}%</b> so với trung bình {len(lq)} phiên ({vn(avg)} tỷ). <span class="lg"><i style="background:{NAVY}"></i>Khớp lệnh <i style="background:{GOLD}"></i>Thỏa thuận</span></p>' + liq_chart(lq))
+    f5, p5 = d.get("foreign5") or [], d.get("prop5") or []
+    if f5 or p5:
+        sec("Dòng tiền 5 phiên (tỷ đồng, ròng)", f'<div class="grid g2">{flow5_chart("Khối ngoại", f5)}{flow5_chart("Tự doanh", p5)}</div>')
+    nt = d.get("notable") or {}
+    if nt.get("up") or nt.get("down"):
+        sec("Cổ phiếu đáng chú ý (GT khớp: tỷ đồng)", f'{notable_table("5 mã tăng nổi bật", nt.get("up", [])[:5], True)}<div style="height:10px"></div>{notable_table("5 mã giảm nổi bật", nt.get("down", [])[:5], False)}')
+    return "".join(parts)
+
+CSS_P2 = """
+.cap{font-size:20px;margin:2px 0 8px;color:#3b3a36} .cap b{font-weight:700}
+.lg{float:right;font-size:17px} .lg i{display:inline-block;width:13px;height:13px;margin:0 5px 0 12px;vertical-align:-1px}
+.h5{font-size:21px;font-weight:700;padding:2px 4px 4px} .h5 span{font-weight:700;font-size:19px}
+.card.fl svg{width:100%;height:auto;display:block}
+.nt{padding:0;overflow:hidden;flex-shrink:0} .nt .nh{color:#fff;font-weight:700;font-size:21px;padding:7px 14px}
+.nt table{width:100%;border-collapse:collapse;font-size:19px} .nt th{font-size:16px;color:#6F6E68;font-weight:600;text-align:right;padding:5px 8px;background:#F4F2EA}
+.nt td{text-align:right;padding:5px 8px;border-top:1px solid #ECE9DF;font-variant-numeric:tabular-nums} .nt th:first-child,.nt td.sy{text-align:left;font-weight:700}
+.nt td.sg{font-size:16px;text-align:right;color:#3b3a36} .nt .pos{color:#2F7D4F;font-weight:700} .nt .neg{color:#B8432F;font-weight:700}
+"""
+
+def shell(d, body, k, title=None):
     mode = d["mode"]
     return f"""<!doctype html><html lang="vi"><head><meta charset="utf-8"><style>{CSS}</style>
-<style>{CSS_M}</style><style>{CSS_P}</style></head>
+<style>{CSS_M}</style><style>{CSS_P}</style><style>{CSS_P2}</style></head>
 <body><div class="page" style="--k:{k}">
-<div class="top"><img src="data:image/png;base64,{LOGO}" alt="Weha"><div class="ed"><b class="bs">{TITLE[mode]}</b>{esc(d["date_label"])}</div></div>
+<div class="top"><img src="data:image/png;base64,{LOGO}" alt="Weha"><div class="ed"><b class="bs">{title or TITLE[mode]}</b>{esc(d["date_label"])}</div></div>
 {body}
 <div class="spacer"></div>
 <div class="foot"><div class="who"><b>Nguyễn Hoài</b><br>Weha · 0396 336 096</div>
 <div class="disc">Số liệu mang tính tham khảo, không phải khuyến nghị mua/bán.<br>Nhà đầu tư tự chịu trách nhiệm với quyết định của mình.</div></div>
 </div></body></html>"""
 
-async def render(d, out):
+async def render(d, out, page=1):
     from playwright.async_api import async_playwright
-    fn = page_giua if d["mode"] == "giua" else page_cuoi
-    base = os.path.join(out, f"Weha_{NAME[d['mode']]}_{d['file_date']}")
+    fn = page_giua if d["mode"] == "giua" else (page_cuoi if page == 1 else page_cuoi2)
+    ttl = TITLE[d["mode"]] if page == 1 else "DIỄN BIẾN 10 PHIÊN"
+    base = os.path.join(out, f"Weha_{NAME[d['mode']]}{'' if page == 1 else '2'}_{d['file_date']}")
     async with async_playwright() as p:
         b = await p.chromium.launch()
         pg = await b.new_page(viewport={"width": 1080, "height": 1920}, device_scale_factor=2.3)
         async def draw(k):
-            open(base + ".html", "w", encoding="utf-8").write(shell(d, fn(d), k))
+            open(base + ".html", "w", encoding="utf-8").write(shell(d, fn(d), k, ttl))
             await pg.goto("file://" + os.path.abspath(base + ".html")); await pg.wait_for_timeout(250)
             return await pg.evaluate("document.querySelector('.page').scrollHeight")
         k = 1.0
@@ -257,3 +384,5 @@ if __name__ == "__main__":
     out = sys.argv[2] if len(sys.argv) > 2 else "."
     os.makedirs(out, exist_ok=True)
     print(asyncio.run(render(d, out)))
+    if d["mode"] == "cuoi" and any(d.get(x) for x in ("hist10", "liq10", "foreign5", "prop5", "notable")):
+        print(asyncio.run(render(d, out, 2)))
