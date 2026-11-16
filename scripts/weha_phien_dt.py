@@ -5,7 +5,7 @@ import json, os, sys, re, asyncio
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from weha_sang import LOGO, CSS, CSS_M, esc, rich, boldnum, news, tile
 
-TITLE = {"giua": "CẬP NHẬT PHIÊN SÁNG", "cuoi": "TỔNG KẾT CUỐI NGÀY"}
+TITLE = {"giua": "CẬP NHẬT PHIÊN SÁNG", "cuoi": "MARKET LENS"}
 NAME = {"giua": "trua", "cuoi": "cuoi"}
 
 CSS_P = """
@@ -443,7 +443,7 @@ def page_cuoi_1p(d):
     lq = d.get("liq10") or []
     if lq:
         n += 1; tot = [a + b for _, a, b in lq]; avg = sum(tot) / len(tot); last = tot[-1]
-        parts.append(f'<h2><span class="no">{n:02d}</span> Thanh khoản {len(lq)} phiên (tỷ đồng)</h2><p class="cap">Phiên cuối <b>{vn(last)}</b> tỷ, <b class="{"pos" if last >= avg else "neg"}">{vn((last-avg)/avg*100, 1, True)}%</b> so với TB {len(lq)} phiên ({vn(avg)} tỷ). {LEG([("Khớp lệnh", NAVY), ("Thỏa thuận", GOLD)])}</p>{liq_chart(lq, 235)}')
+        parts.append(f'<h2><span class="no">{n:02d}</span> Thanh khoản {len(lq)} phiên (tỷ đồng)</h2><p class="cap">Phiên cuối <b>{vn(last)}</b> tỷ, <b class="{"pos" if last >= avg else "neg"}">{vn((last-avg)/avg*100, 1, True)}%</b> so với TB {len(lq)} phiên ({vn(avg)} tỷ). {LEG([("Khớp lệnh", NAVY), ("Thỏa thuận", GOLD)])}</p>{liq_chart(lq, 212)}')
     f5, p5 = d.get("foreign5") or [], d.get("prop5") or []
     if f5 or p5 or d.get("foreign_top5") or d.get("prop_top5"):
         n += 1; stacked = bool(f5) and len(f5[0]) >= 3
@@ -484,6 +484,10 @@ def page_cuoi3(d):
     return "".join(parts)
 
 CSS_P2 = """
+.ed b.bs:has(.wm){border-bottom:none;padding-bottom:0;margin-bottom:4px;letter-spacing:0}
+.wm{display:block;font-family:"Inter Display",Inter,sans-serif;font-weight:900;font-size:40px;line-height:1;letter-spacing:-.01em;color:#1F3366;font-style:normal}
+.wm em{font-style:normal;color:#2F5FD0}
+.ws{display:block;font-family:Inter,sans-serif;font-weight:700;font-size:15px;letter-spacing:.24em;color:#1F3366;margin-top:6px;padding-top:5px;border-top:4px solid #EED951}
 .c1p .strip{display:flex;justify-content:space-between;font-size:17px;padding:8px 2px 2px;white-space:nowrap} .c1p .strip .pos{color:#2F7D4F} .c1p .strip .neg{color:#B8432F}
 .c1p h2{margin:8px 0 4px;padding-top:6px} .c1p .cap{font-size:18px;margin:0 0 5px}
 .c1p .sf{padding:5px 0;font-size:19px;grid-template-columns:140px 1fr 100px 78px 84px} .c1p .sf .bw{height:14px}
@@ -513,12 +517,17 @@ CSS_P2 = """
 .nt td.sg{font-size:17px;text-align:right;color:#3b3a36} .nt .pos{color:#2F7D4F;font-weight:700} .nt .neg{color:#B8432F;font-weight:700}
 """
 
+def wordmark(t):
+    if t == "MARKET LENS":
+        return '<span class="wm">MARKET <em>LENS</em></span><small class="ws">BẢN TIN CUỐI NGÀY</small>'
+    return t
+
 def shell(d, body, k, title=None):
     mode = d["mode"]
     return f"""<!doctype html><html lang="vi"><head><meta charset="utf-8"><style>{CSS}</style>
 <style>{CSS_M}</style><style>{CSS_P}</style><style>{CSS_P2}</style></head>
 <body><div class="page" style="--k:{k}">
-<div class="top"><img src="data:image/png;base64,{LOGO}" alt="Weha"><div class="ed"><b class="bs">{title or TITLE[mode]}</b>{esc(d["date_label"])}</div></div>
+<div class="top"><img src="data:image/png;base64,{LOGO}" alt="Weha"><div class="ed"><b class="bs">{wordmark(title or TITLE[mode])}</b>{esc(d["date_label"])}</div></div>
 {body}
 <div class="spacer"></div>
 <div class="foot"><div class="who"><b>Nguyễn Hoài</b><br>Weha · 0396 336 096</div>
