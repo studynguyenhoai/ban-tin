@@ -229,10 +229,10 @@ GREEN, RED, NAVY, GOLD = "#2F7D4F", "#B8432F", "#1B2B5B", "#E0A526"
 def svg_wrap(W, H, inner):
     return f'<div class="card chart"><svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" font-family="Inter,sans-serif">{inner}</svg></div>'
 
-def hist_chart(pts):
+def hist_chart(pts, H=250):
     """pts: [[dd/mm, close]] — đường VN-Index nhiều phiên, ghi số từng điểm."""
     if len(pts) < 2: return ""
-    W, H, L, R, T, B = 972, 250, 66, 30, 36, 34
+    W, L, R, T, B = 972, 66, 30, 36, 34
     ys = [p[1] for p in pts]; lo, hi = min(ys), max(ys); pad = (hi - lo) * .18 or 1; lo -= pad; hi += pad
     X = lambda i: L + (W - L - R) * i / (len(pts) - 1)
     Y = lambda v: T + (H - T - B) * (hi - v) / (hi - lo)
@@ -255,10 +255,10 @@ def hist_chart(pts):
                  f'<text x="{X(i):.1f}" y="{H-10}" font-size="17" text-anchor="{anchor}" fill="#6F6E68">{esc(dt)}</text>')
     return svg_wrap(W, H, f'{g}<path d="{area}" fill="{c}" opacity=".10"/><path d="{path}" fill="none" stroke="{c}" stroke-width="3.5" stroke-linejoin="round"/>{dots}')
 
-def liq_chart(rows):
+def liq_chart(rows, H=310):
     """rows: [[dd/mm, khớp lệnh, thỏa thuận]] tỷ đồng — cột chồng + đường trung bình."""
     if not rows: return ""
-    W, H, L, R, T, B = 972, 310, 66, 14, 32, 34
+    W, L, R, T, B = 972, 66, 14, 32, 34
     tot = [a + b for _, a, b in rows]; mx = max(tot) * 1.12
     avg = sum(tot) / len(tot)
     Y = lambda v: T + (H - T - B) * (1 - v / mx)
@@ -360,9 +360,9 @@ def liq_caption(L3, unit="tỷ"):
 
 LEG = lambda items: '<span class="lg">' + "".join(f'<i style="background:{c}"></i>{n}' for n, c in items) + '</span>'
 
-def flow_col(no, title, rows, top, stacked):
+def flow_col(no, title, rows, top, stacked, H=270):
     """Cột kiểu Market Lens: tiêu đề, biểu đồ 5 phiên, 2 bảng top 5 mua/bán ròng."""
-    W, H, L, R, T, B = 470, 270, 10, 10, 28, 30
+    W, L, R, T, B = 470, 10, 10, 28, 44
     if rows:
         vals = [sum(r[1:]) for r in rows]
         mx = max(abs(v) for v in vals) * 1.25 or 1
@@ -412,9 +412,55 @@ def page_cuoi2(d):
         parts.append(f'<div class="grid g2" style="margin-top:14px">{flow_col(3, "KHỐI NGOẠI | HOSE", f5, d.get("foreign_top5"), stacked)}{flow_col(4, "TỰ DOANH | HOSE", p5, d.get("prop_top5"), False)}</div>')
     return "".join(parts)
 
-def sector_flow_card(rows):
+
+def notable_pair(nt):
+    def one(title, rows, up):
+        col = GREEN if up else RED
+        body = ""
+        for r in rows[:5]:
+            sym, price, pct, gt, klx = r[:5]
+            body += (f'<tr><td class="sy">{esc(sym)}</td><td class="{"pos" if pct >= 0 else "neg"}">{vn(pct, 2, True)}%</td><td>{vn(gt)}</td><td>{vn(klx, 2)}x</td></tr>')
+        return (f'<div class="card nt"><div class="nh" style="background:{col}">{title}</div><table>'
+                f'<tr><th>Mã</th><th>% giá</th><th>GT khớp</th><th>KL/TB20</th></tr>{body}</table></div>')
+    return f'<div class="grid g2">{one("5 mã tăng nổi bật", nt.get("up", []), True)}{one("5 mã giảm nổi bật", nt.get("down", []), False)}</div>'
+
+def page_cuoi_1p(d):
+    """Bản cuối ngày gọn trong 1 trang 1080x1920."""
+    parts = []; n = 0
+    strip = ""
+    if d.get("indices"):
+        cells = []
+        for name, close, ref in d["indices"]:
+            pc = (close - ref) / ref * 100
+            cells.append(f'<span><b>{esc(name)}</b> {vn(close, 2)} <b class="{"pos" if pc >= 0 else "neg"}">{vn(pc, 2, True)}%</b></span>')
+        strip = '<div class="strip">' + "".join(cells) + "</div>"
+    parts.append(strip)
+    h = d.get("hist10") or []
+    if len(h) >= 2:
+        n += 1; chg = h[-1][1] - h[0][1]
+        parts.append(f'<h2><span class="no">{n:02d}</span> VN-Index {len(h)} phiên gần nhất</h2><p class="cap">Từ {esc(h[0][0])} đến {esc(h[-1][0])}: <b class="{"pos" if chg >= 0 else "neg"}">{vn(chg, 2, True)} điểm ({vn(chg / h[0][1] * 100, 2, True)}%)</b></p>{hist_chart(h, 175)}')
+    lq = d.get("liq10") or []
+    if lq:
+        n += 1; tot = [a + b for _, a, b in lq]; avg = sum(tot) / len(tot); last = tot[-1]
+        parts.append(f'<h2><span class="no">{n:02d}</span> Thanh khoản {len(lq)} phiên (tỷ đồng)</h2><p class="cap">Phiên cuối <b>{vn(last)}</b> tỷ, <b class="{"pos" if last >= avg else "neg"}">{vn((last-avg)/avg*100, 1, True)}%</b> so với TB {len(lq)} phiên ({vn(avg)} tỷ). {LEG([("Khớp lệnh", NAVY), ("Thỏa thuận", GOLD)])}</p>{liq_chart(lq, 175)}')
+    f5, p5 = d.get("foreign5") or [], d.get("prop5") or []
+    if f5 or p5 or d.get("foreign_top5") or d.get("prop_top5"):
+        n += 1; stacked = bool(f5) and len(f5[0]) >= 3
+        parts.append(f'<div class="grid g2" style="margin-top:12px">{flow_col(n, "KHỐI NGOẠI | HOSE", f5, d.get("foreign_top5"), stacked, 170)}{flow_col(n + 1, "TỰ DOANH | HOSE", p5, d.get("prop_top5"), False, 170)}</div>')
+        n += 1
+    sf = d.get("sector_flow") or []
+    if sf:
+        n += 1
+        parts.append(f'<h2><span class="no">{n:02d}</span> Dòng tiền theo ngành</h2>{sector_flow_card(sf, 5)}')
+    nt = d.get("notable") or {}
+    if nt.get("up") or nt.get("down"):
+        n += 1
+        parts.append(f'<h2><span class="no">{n:02d}</span> Cổ phiếu đáng chú ý</h2>{notable_pair(nt)}')
+    return '<div class="c1p">' + "".join(parts) + "</div>"
+
+def sector_flow_card(rows, n=12):
     """rows: [[ngành, GT khớp tỷ, % so TB20, % giá]] — sắp theo GT giảm dần."""
-    rows = sorted(rows, key=lambda r: -r[1])[:12]
+    rows = sorted(rows, key=lambda r: -r[1])[:n]
     mx = max(r[1] for r in rows) or 1
     body = ""
     for nm, gt, vs, pc in rows:
@@ -437,6 +483,11 @@ def page_cuoi3(d):
     return "".join(parts)
 
 CSS_P2 = """
+.c1p .strip{display:flex;justify-content:space-between;font-size:17px;padding:8px 2px 2px;white-space:nowrap} .c1p .strip .pos{color:#2F7D4F} .c1p .strip .neg{color:#B8432F}
+.c1p h2{margin:8px 0 4px;padding-top:6px} .c1p .cap{font-size:18px;margin:0 0 5px}
+.c1p .sf{padding:5px 0;font-size:19px;grid-template-columns:140px 1fr 100px 78px 84px} .c1p .sf .bw{height:14px}
+.c1p .nt table{font-size:19px} .c1p .nt td{padding:6px 6px} .c1p .nt th{padding:4px 6px} .c1p .nt .nh{font-size:20px;padding:6px 12px}
+.c1p .fb{padding:4px 6px 8px} .c1p .tb table{font-size:17px} .c1p .tb td{padding:4px 7px} .c1p .fh{font-size:18px;padding:7px 10px}
 .fcol{border-radius:12px;overflow:hidden;background:#fff;border:1px solid #E6E3D8}
 .fh{background:#1B2B5B;color:#fff;font-weight:800;font-size:20px;padding:9px 12px;letter-spacing:.2px}
 .no2{display:inline-block;background:#fff;color:#1B2B5B;border-radius:6px;padding:0 8px;margin-right:9px;font-size:18px}
@@ -475,8 +526,9 @@ def shell(d, body, k, title=None):
 
 async def render(d, out, page=1):
     from playwright.async_api import async_playwright
-    fn = page_giua if d["mode"] == "giua" else {1: page_cuoi, 2: page_cuoi2, 3: page_cuoi3}[page]
-    ttl = TITLE[d["mode"]] if page == 1 else {2: "THANH KHOẢN VÀ DÒNG TIỀN", 3: "NGÀNH VÀ CỔ PHIẾU CHÚ Ý"}[page]
+    one = d.get("layout", "1p") == "1p"
+    fn = page_giua if d["mode"] == "giua" else (page_cuoi_1p if one else {1: page_cuoi, 2: page_cuoi2, 3: page_cuoi3}[page])
+    ttl = TITLE[d["mode"]] if (page == 1 or one) else {2: "THANH KHOẢN VÀ DÒNG TIỀN", 3: "NGÀNH VÀ CỔ PHIẾU CHÚ Ý"}[page]
     base = os.path.join(out, f"Weha_{NAME[d['mode']]}{'' if page == 1 else page}_{d['file_date']}")
     async with async_playwright() as p:
         b = await p.chromium.launch()
@@ -501,7 +553,7 @@ if __name__ == "__main__":
     out = sys.argv[2] if len(sys.argv) > 2 else "."
     os.makedirs(out, exist_ok=True)
     print(asyncio.run(render(d, out)))
-    if d["mode"] == "cuoi":
+    if d["mode"] == "cuoi" and d.get("layout", "1p") != "1p":
         if any(d.get(x) for x in ("liq_intraday", "liq10", "foreign5", "prop5", "foreign_top5", "prop_top5")):
             print(asyncio.run(render(d, out, 2)))
         if any(d.get(x) for x in ("sector_flow", "notable")):
