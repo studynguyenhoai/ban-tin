@@ -274,7 +274,7 @@ def liq_chart(rows, H=310):
         bars_ += (f'<rect x="{x:.1f}" y="{Y(a):.1f}" width="{bw:.1f}" height="{Y(0)-Y(a):.1f}" fill="{NAVY}"/>'
                   f'<rect x="{x:.1f}" y="{Y(a+b):.1f}" width="{bw:.1f}" height="{Y(a)-Y(a+b):.1f}" fill="{GOLD}"/>'
                   f'<text x="{x+bw/2:.1f}" y="{Y(a+b)-8:.1f}" font-size="17" font-weight="700" text-anchor="middle" fill="#141413" stroke="#fff" stroke-width="5" paint-order="stroke">{vn(a+b)}</text>'
-                  f'<text x="{x+bw/2:.1f}" y="{Y(a)+20:.1f}" font-size="15" font-weight="700" text-anchor="middle" fill="#fff">{vn(a)}</text>'
+                  f'<text transform="translate({x+bw/2+5:.1f},{(Y(a)+Y(0))/2:.1f}) rotate(-90)" font-size="16" font-weight="700" text-anchor="middle" fill="#fff">{vn(a)}</text>'
                   f'<text x="{x+bw/2:.1f}" y="{H-10}" font-size="17" text-anchor="middle" fill="#6F6E68">{esc(dt)}</text>')
     ay = Y(avg)
     ref = f'<line x1="{L}" x2="{W-R}" y1="{ay:.1f}" y2="{ay:.1f}" stroke="#141413" stroke-dasharray="6 5" stroke-width="1.5"/>'
@@ -443,7 +443,7 @@ def page_cuoi_1p(d):
     lq = d.get("liq10") or []
     if lq:
         n += 1; tot = [a + b for _, a, b in lq]; avg = sum(tot) / len(tot); last = tot[-1]
-        parts.append(f'<h2><span class="no">{n:02d}</span> Thanh khoản {len(lq)} phiên (tỷ đồng)</h2><p class="cap">Phiên cuối <b>{vn(last)}</b> tỷ, <b class="{"pos" if last >= avg else "neg"}">{vn((last-avg)/avg*100, 1, True)}%</b> so với TB {len(lq)} phiên ({vn(avg)} tỷ). {LEG([("Khớp lệnh", NAVY), ("Thỏa thuận", GOLD)])}</p>{liq_chart(lq, 175)}')
+        parts.append(f'<h2><span class="no">{n:02d}</span> Thanh khoản {len(lq)} phiên (tỷ đồng)</h2><p class="cap">Phiên cuối <b>{vn(last)}</b> tỷ, <b class="{"pos" if last >= avg else "neg"}">{vn((last-avg)/avg*100, 1, True)}%</b> so với TB {len(lq)} phiên ({vn(avg)} tỷ). {LEG([("Khớp lệnh", NAVY), ("Thỏa thuận", GOLD)])}</p>{liq_chart(lq, 235)}')
     f5, p5 = d.get("foreign5") or [], d.get("prop5") or []
     if f5 or p5 or d.get("foreign_top5") or d.get("prop_top5"):
         n += 1; stacked = bool(f5) and len(f5[0]) >= 3
@@ -452,7 +452,7 @@ def page_cuoi_1p(d):
     sf = d.get("sector_flow") or []
     if sf:
         n += 1
-        parts.append(f'<h2><span class="no">{n:02d}</span> Dòng tiền theo ngành</h2>{sector_flow_card(sf, 5)}')
+        parts.append(f'<h2><span class="no">{n:02d}</span> Dòng tiền theo ngành</h2>{sector_flow_card(sf, 4)}')
     nt = d.get("notable") or {}
     if nt.get("up") or nt.get("down"):
         n += 1
