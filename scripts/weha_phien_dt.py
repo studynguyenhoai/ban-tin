@@ -486,8 +486,8 @@ def page_cuoi3(d):
 CSS_P2 = """
 .ed b.bs:has(.wm){border-bottom:none;padding-bottom:0;margin-bottom:4px;letter-spacing:0}
 .wm{display:block;font-family:"Inter Display",Inter,sans-serif;font-weight:900;font-size:40px;line-height:1;letter-spacing:-.01em;color:#1F3366;font-style:normal}
-.wm em{font-style:normal;color:#2F5FD0}
-.ws{display:block;font-family:Inter,sans-serif;font-weight:700;font-size:15px;letter-spacing:.24em;color:#1F3366;margin-top:6px;padding-top:5px;border-top:4px solid #EED951}
+.wm em{font-style:normal;color:#1F3366;background:linear-gradient(transparent 52%,#EED951 52%);padding:0 3px}
+.ws{display:block;font-family:Inter,sans-serif;font-weight:700;font-size:15px;letter-spacing:.24em;color:#1F3366;margin-top:7px}
 .c1p .strip{display:flex;justify-content:space-between;font-size:17px;padding:8px 2px 2px;white-space:nowrap} .c1p .strip .pos{color:#2F7D4F} .c1p .strip .neg{color:#B8432F}
 .c1p h2{margin:8px 0 4px;padding-top:6px} .c1p .cap{font-size:18px;margin:0 0 5px}
 .c1p .sf{padding:5px 0;font-size:19px;grid-template-columns:140px 1fr 100px 78px 84px} .c1p .sf .bw{height:14px}
