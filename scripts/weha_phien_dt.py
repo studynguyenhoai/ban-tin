@@ -439,15 +439,15 @@ def page_cuoi_1p(d):
     h = d.get("hist10") or []
     if len(h) >= 2:
         n += 1; chg = h[-1][1] - h[0][1]
-        parts.append(f'<h2><span class="no">{n:02d}</span> VN-Index {len(h)} phiên gần nhất</h2><p class="cap">Từ {esc(h[0][0])} đến {esc(h[-1][0])}: <b class="{"pos" if chg >= 0 else "neg"}">{vn(chg, 2, True)} điểm ({vn(chg / h[0][1] * 100, 2, True)}%)</b></p>{hist_chart(h, 175)}')
+        parts.append(f'<h2><span class="no">{n:02d}</span> VN-Index {len(h)} phiên gần nhất</h2><p class="cap">Từ {esc(h[0][0])} đến {esc(h[-1][0])}: <b class="{"pos" if chg >= 0 else "neg"}">{vn(chg, 2, True)} điểm ({vn(chg / h[0][1] * 100, 2, True)}%)</b></p>{hist_chart(h, 200)}')
     lq = d.get("liq10") or []
     if lq:
         n += 1; tot = [a + b for _, a, b in lq]; avg = sum(tot) / len(tot); last = tot[-1]
-        parts.append(f'<h2><span class="no">{n:02d}</span> Thanh khoản {len(lq)} phiên (tỷ đồng)</h2><p class="cap">Phiên cuối <b>{vn(last)}</b> tỷ, <b class="{"pos" if last >= avg else "neg"}">{vn((last-avg)/avg*100, 1, True)}%</b> so với TB {len(lq)} phiên ({vn(avg)} tỷ). {LEG([("Khớp lệnh", NAVY), ("Thỏa thuận", GOLD)])}</p>{liq_chart(lq, 212)}')
+        parts.append(f'<h2><span class="no">{n:02d}</span> Thanh khoản {len(lq)} phiên (tỷ đồng)</h2><p class="cap">Phiên cuối <b>{vn(last)}</b> tỷ, <b class="{"pos" if last >= avg else "neg"}">{vn((last-avg)/avg*100, 1, True)}%</b> so với TB {len(lq)} phiên ({vn(avg)} tỷ). {LEG([("Khớp lệnh", NAVY), ("Thỏa thuận", GOLD)])}</p>{liq_chart(lq, 240)}')
     f5, p5 = d.get("foreign5") or [], d.get("prop5") or []
     if f5 or p5 or d.get("foreign_top5") or d.get("prop_top5"):
         n += 1; stacked = bool(f5) and len(f5[0]) >= 3
-        parts.append(f'<div class="grid g2" style="margin-top:12px">{flow_col(n, "KHỐI NGOẠI | HOSE", f5, d.get("foreign_top5"), stacked, 170)}{flow_col(n + 1, "TỰ DOANH | HOSE", p5, d.get("prop_top5"), False, 170)}</div>')
+        parts.append(f'<div class="grid g2" style="margin-top:12px">{flow_col(n, "KHỐI NGOẠI | HOSE", f5, d.get("foreign_top5"), stacked, 185)}{flow_col(n + 1, "TỰ DOANH | HOSE", p5, d.get("prop_top5"), False, 185)}</div>')
         n += 1
     sf = d.get("sector_flow") or []
     if sf:
@@ -487,6 +487,8 @@ CSS_P2 = """
 .ed b.bs:has(.wm){border-bottom:none;padding-bottom:0;margin-bottom:4px;letter-spacing:0}
 .wm{display:block;font-family:"Inter Display",Inter,sans-serif;font-weight:900;font-size:40px;line-height:1;letter-spacing:-.01em;color:#1F3366;font-style:normal}
 .wm em{font-style:normal;color:#1F3366;background:linear-gradient(transparent 52%,#EED951 52%);padding:0 3px}
+.top{margin-bottom:8px;padding-bottom:8px} .top img{height:34px} .ed{font-size:13px;line-height:1.3} .wm{font-size:34px}
+.foot{margin-top:6px;padding-top:7px} .foot .who{font-size:12px;line-height:1.3} .foot .who b{font-size:14px} .foot .disc{font-size:9.5px;line-height:1.35}
 .ws{display:block;font-family:Inter,sans-serif;font-weight:700;font-size:15px;letter-spacing:.24em;color:#1F3366;margin-top:7px}
 .c1p .strip{display:flex;justify-content:space-between;font-size:17px;padding:8px 2px 2px;white-space:nowrap} .c1p .strip .pos{color:#2F7D4F} .c1p .strip .neg{color:#B8432F}
 .c1p h2{margin:8px 0 4px;padding-top:6px} .c1p .cap{font-size:18px;margin:0 0 5px}
@@ -519,7 +521,7 @@ CSS_P2 = """
 
 def wordmark(t):
     if t == "MARKET LENS":
-        return '<span class="wm">MARKET <em>LENS</em></span><small class="ws">BẢN TIN CUỐI NGÀY</small>'
+        return '<span class="wm">MARKET <em>LENS</em></span>'
     return t
 
 def shell(d, body, k, title=None):
