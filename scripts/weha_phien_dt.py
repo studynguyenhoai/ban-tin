@@ -453,11 +453,35 @@ def page_cuoi_1p(d):
     if sf:
         n += 1
         parts.append(f'<h2><span class="no">{n:02d}</span> Dòng tiền theo ngành</h2>{sector_flow_card(sf, 4)}')
+    bd = breadth_deriv_cards(d)
+    if bd:
+        n += 1
+        parts.append(f'<h2><span class="no">{n:02d}</span> Độ rộng và phái sinh</h2>{bd}')
     nt = d.get("notable") or {}
     if nt.get("up") or nt.get("down"):
         n += 1
         parts.append(f'<h2><span class="no">{n:02d}</span> Cổ phiếu đáng chú ý</h2>{notable_pair(nt)}')
     return '<div class="c1p">' + "".join(parts) + "</div>"
+
+def breadth_deriv_cards(d):
+    """Độ rộng HOSE (d["breadth"]) và phái sinh VN30F (d["deriv"]) — hai thẻ cạnh nhau."""
+    cards = []
+    b = d.get("breadth")
+    if b:
+        up, dn, fl = b["up"], b["down"], b["flat"]; tot = max(up + dn + fl, 1)
+        bar = (f'<div style="display:flex;height:14px;border-radius:7px;overflow:hidden;margin:10px 0 8px">'
+               f'<i style="width:{up/tot*100:.1f}%;background:{GREEN}"></i><i style="width:{fl/tot*100:.1f}%;background:#C9C5B8"></i><i style="width:{dn/tot*100:.1f}%;background:{RED}"></i></div>')
+        cards.append(f'<div class="card" style="padding:14px 18px"><b style="font-size:26px">Độ rộng HOSE</b>{bar}'
+                     f'<div style="font-size:24px"><b class="pos">{vn(up)}</b> tăng · <b class="neg">{vn(dn)}</b> giảm · <b>{vn(fl)}</b> đứng giá</div></div>')
+    f = d.get("deriv")
+    if f:
+        pc = f["chg_pct"]; ba = f.get("basis")
+        l1 = f'<b style="font-size:26px">{esc(f["name"])}</b> <span style="font-size:22px;color:#666">{esc(f.get("note", ""))}</span>'
+        l2 = f'<div style="font-size:26px;margin:8px 0 4px"><b>{vn(f["price"], 2)}</b> <b class="{"pos" if pc >= 0 else "neg"}">{vn(pc, 2, True)}%</b></div>'
+        l3 = '<div style="font-size:22px">' + (f'Basis <b class="{"pos" if ba >= 0 else "neg"}">{vn(ba, 2, True)}</b> · ' if ba is not None else "") + f'KL <b>{vn(f["vol"])}</b> HĐ · OI <b>{vn(f["oi"])}</b>' + (f' (<b class="{"pos" if f["oi_chg"] >= 0 else "neg"}">{vn(f["oi_chg"], 0, True)}</b>)' if f.get("oi_chg") is not None else "") + '</div>'
+        cards.append(f'<div class="card" style="padding:14px 18px">{l1}{l2}{l3}</div>')
+    if not cards: return ""
+    return f'<div class="grid g2" style="margin-top:12px">{"".join(cards)}</div>'
 
 def sector_flow_card(rows, n=12):
     """rows: [[ngành, GT khớp tỷ, % so TB20, % giá]] — sắp theo GT giảm dần."""
